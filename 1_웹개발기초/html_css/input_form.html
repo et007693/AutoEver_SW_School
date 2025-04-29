@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!-- 라디오버튼 -->
+    <form action="">
+      <input type="text" id="username" name="username" value="이름" />
+      <input type="password" name="pwd" value="비밀번호" />
+    </form>
+
+    <label for="">
+      <input type="radio" name="gender" value="male" />
+      남성
+    </label>
+    <label for="">
+      <input type="radio" name="gender" value="female" />
+      여성
+    </label>
+    <br />
+
+    <label for="user-id"> 아이디 </label>
+    <input type="text" id="user-id" />
+
+    <!-- 그룹화 -->
+    <fieldset>
+      <legend>회원가입</legend>
+      <label>
+        아이디
+        <input type="text" />
+      </label>
+      <label>
+        비밀번호
+        <input type="password" />
+      </label>
+    </fieldset>
+
+    <!-- 다중 중 입력 -->
+    <textarea name="desc" rows="5" cols="30"> </textarea>
+    <br />
+
+    <!-- 셀렉트 박스 -->
+    <select name="city" id="">
+      <option value="seoul">서울</option>
+      <option value="busan">부산</option>
+      <option value="daejeon">대전</option>
+    </select>
+    <br />
+
+    <!-- 버튼 -->
+    <input type="button" value="버튼1" />
+    <button type="submit">버튼2</button>
+
+    <script>
+      const input = document.getElementById("username");
+      input.addEventListener("input", function (e) {
+        console.log(e.target.value);
+      });
+    </script>
+  </body>
+</html>
