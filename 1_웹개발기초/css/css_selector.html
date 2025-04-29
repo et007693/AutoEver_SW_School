@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 전체 선택자 */
+      * {
+        color: red;
+        font-family: "Roboto", "Noto Sans KR", Arial, sans-serif;
+      }
+
+      /* 태그 선택자 */
+      div {
+        background-color: royalblue;
+      }
+
+      /* 클래스 선택자 */
+      .accent {
+        border: 1px solid black;
+        box-shadow: 1px 1px 1px;
+        /* background-color: aqua; */
+      }
+
+      /* id 선택자 */
+      #container {
+        width: 500px;
+      }
+
+      /* 속성 선택자 */
+      a[href] {
+        color: red;
+        text-decoration: none;
+        margin-right: 20px;
+      }
+      a[target="_blank"] {
+        background-color: palevioletred;
+      }
+    </style>
+  </head>
+  <body>
+    <p>안녕하세요. 오늘은 날씨가 화창해요</p>
+    <div>오늘의 영화</div>
+    <div class="accent">오늘의 영화</div>
+    <div class="accent" id="container">오늘의 영화</div>
+    <p>
+      <a href="https://www.google.com">Google</a>
+    </p>
+    <p>
+      <a href="https://www.naver.com" target="_blank">Naver</a>
+    </p>
+  </body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        color: grey;
+      }
+      div {
+        color: darkblue;
+      }
+
+      /* 단위 */
+      .parent {
+        font-size: 24px;
+      }
+      .child {
+        color: blue;
+        /* font-size: 60%; */
+        /* font-size: 1.5em; */
+        font-size: 1rem;
+      }
+      .child-child {
+        /* font-size: 60%; */
+        /* font-size: 1.5em; */
+        font-size: 2rem;
+      }
+
+      /* 뷰포트 기준 크기 */
+      .vw {
+        font-size: 2vw;
+      }
+      .vh {
+        font-size: 2vh;
+      }
+
+      /* 색상 */
+      .color {
+        width: 120px;
+        height: 120px;
+        /* background-color: red; */
+        /* background-color: rgb(255,0,0); */
+        /* background-color: #f00; */
+        background-color: rgba(255, 0, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="parent">
+      <p>안녕하세요.</p>
+      <p>오늘은 수업 2일차입니다.</p>
+      <div class="child">
+        <p>저는 자식입니다.</p>
+        <div class="child-child">
+          <p>저는 자식의 자식입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <p>집에 갈 시간이 얼마 안남았어요.</p>
+
+    <p class="vw">집에 갈 시간이 얼마 안남았어요.</p>
+    <p class="vh">집에 갈 시간이 얼마 안남았어요.</p>
+
+    <p class="color">글씨 색</p>
+  </body>
+</html>

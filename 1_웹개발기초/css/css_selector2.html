@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width='device-width', initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      /* 집합 선택자 */
+      p,
+      #title,
+      .red {
+        color: red;
+      }
+
+      /* 자식 선택자 : 직계 자식 */
+      .box > p {
+        color: royalblue;
+      }
+
+      /* 인접 자식 선택자 */
+      h1 + h2 {
+        color: blue;
+      }
+      /* 뒤에 오는 모든 자식 선택 */
+      h1 ~ h2 {
+        color: orange;
+      }
+
+      /* 가상 요소 선택자 : 실제로는 존재하지 않는 가상의 부분에 스타일 적용 */
+      h1::after {
+        content: "@@";
+        color: red;
+      }
+
+      /* 가상 클래스 선택자 */
+      a:link {
+        color: orange;
+      }
+      a:visited {
+        color: green;
+      }
+
+      /* 동적 가상 클래스 선택자 : 사용자의 동작 상태에 따라서 동적으로 변하는 상태 */
+      button {
+        width: 150px;
+        height: 40px;
+        background-color: darkgreen;
+        color: white;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s 0.1s ease;
+      }
+      button:active {
+        background-color: rgb(12, 41, 12);
+        transform: translate(1px, 1px);
+      }
+      /* button:hover {
+        background-color: darkblue;
+        width: 300px;
+      } */
+
+      /* 입력 요소 가상 클래스 선택자 : focus, checked, disabled, enabled */
+      input:focus {
+        background-color: pink;
+        color: white;
+      }
+      input:disabled {
+        background-color: darkgrey;
+      }
+
+      /* 구조적 가상 클래스 선택자 : 요소의 구조와 위치에 따라 스타일을 적용 */
+      li:first-child {
+        color: royalblue;
+      }
+      li:last-child {
+        color: orangered;
+      }
+      li:nth-child(3) {
+        color: blue;
+      }
+      li:nth-child(2n) {
+        /* 홀수는 2n-1 */
+        color: pink;
+      }
+    </style>
+  </head>
+  <body>
+    <p>색상 확인</p>
+    <div id="title">제목 색상</div>
+    <nav class="red">클래스 선택자</nav>
+    <div class="box">
+      <p>저는 자식 1번입니다.</p>
+      <p>저는 자식 2번입니다.</p>
+      <div>
+        <p>저는 자식에 자식 1번입니다.</p>
+      </div>
+    </div>
+
+    <h1>인접 형제 1번입니다.</h1>
+    <h2>인접 형제 2-1번입니다.</h2>
+    <h2>인접 형제 2-1번입니다.</h2>
+    <h3>인접 형제 3번입니다.</h3>
+
+    <a href="http://kakao.com">카카오</a>
+
+    <p><button>동적 클래스</button></p>
+
+    <label for="">입력 확인<input type="text" /></label>
+    <br />
+    <label for="">비활성화<input type="text" disabled /></label>
+
+    <ul>
+      <li>1번째</li>
+      <li>2번째</li>
+      <li>3번째</li>
+      <li>4번째</li>
+      <li>5번째</li>
+    </ul>
+  </body>
+</html>
