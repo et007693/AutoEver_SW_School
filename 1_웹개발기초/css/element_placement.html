@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+      }
+
+      .container {
+        margin-top: 40px;
+        width: 300px;
+        height: 1000px;
+        background-color: bisque;
+        position: relative;
+      }
+
+      .red-box {
+        background-color: red;
+        position: absolute;
+        left: 10px;
+        top: 10px;
+      }
+
+      .green-box {
+        background-color: green;
+        position: relative;
+        left: 80px;
+        top: 80px;
+      }
+
+      .blue-box {
+        background-color: blue;
+        top: 40px;
+        position: static;
+      }
+
+      .title-box {
+        position: fixed;
+        width: 500px;
+        height: 40px;
+        top: 0;
+        left: 0;
+        background-color: orange;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="box red-box"></div>
+      <div class="box green-box"></div>
+      <div class="box blue-box"></div>
+      <div class="box title-box"></div>
+    </div>
+  </body>
+</html>

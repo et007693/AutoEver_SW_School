@@ -6,6 +6,9 @@
     <title>Document</title>
     <style>
       /* @import url("https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap"); */
+      div {
+        font-weight: bold;
+      }
 
       h1 {
         /* font-family: "맑은 고딕", "Nanum Pen Script", sans-serif; */
@@ -13,11 +16,35 @@
         font-weight: lighter;
         font-style: italic;
       }
+
+      p {
+        text-align: center;
+        /* 자간 */
+        letter-spacing: 1px;
+        /* 줄 간격 */
+        line-height: 140%;
+        text-shadow: 1px 2px 3px orange;
+      }
+
+      a {
+        text-decoration: none;
+      }
+
+      .through {
+        text-decoration: line-through;
+      }
     </style>
   </head>
   <body>
     <div>
       <h1>폰트를 적용합니다.</h1>
+      <p>폰트를 확인합니다.</p>
+      <a href="https:www.naver.com">네이버</a>
+      <p class="through">취소선</p>
+      <p>
+        행복의 한 쪽 문이 닫히면 다른 쪽 문이 열린다. 그러나 흔히 우리는 닫혀진
+        문을 오랫동안 보기 때문에 우리를 위해 열려 있는 문을 보지 못한다.
+      </p>
     </div>
   </body>
 </html>
