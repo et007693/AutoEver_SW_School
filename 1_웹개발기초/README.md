@@ -61,4 +61,33 @@
 
 ### 알게된 것
 
-    동적 가상 클래스 선택자 : 마우스를 올렸을 때 변화 transition, transform을 많이 사용함
+    1. 동적 가상 클래스 선택자 : 마우스를 올렸을 때 변화 transition, transform을 많이 사용함
+
+## 0430 CSS
+
+### CSS
+
+    letter-spacing : 자간
+    line-height : 줄 간격
+    box model - margin, border, padding
+    1개 - 모든 방향
+    2개 - 상하, 좌우
+    3개 이상 - 시계 방향(상, 우, 하, 좌)
+    box-sizing : content-box, border-box(크기에 padding, border 포함)
+    블록 : 요소의 너비가 가로 전체를 차지하는 것(hn, p, div)
+    인라인 : 요소의 너비가 컨텐츠 크기(a, span)
+
+    position - static, relative, absolute, fixed, sticky
+    - static : 기본값, 문서의 흐름에 따라 배치
+    - relative : 자신의 원래 위치가 기준
+    - absolute : 가장 가까운 위치 지정 부모 요소 기준
+    - fixed : 뷰포트 기준
+    - sticky : 스크롤시 특정 위치에 고정
+
+### 알게된 것
+
+    1. 가운데 정렬을 하려면, 요소가 이동할 공간이 있어야 함 -> span 같은 경우 inline 속성이기 때문에, 가운데 정렬을 하더라도, 화면 중앙으로 이동하지 않음, 따라서 p tag를 사용해주어야 함
+    2. 블록, 인라인 블록은 width, height, margin, padding이 모두 적용
+    3. 인라인은 width, height 적용X, padding과 margin만 좌우에 적용
+    4. vscode 여러 행 선택 단축키 : ctrl + alt + 방향키
+    5. vscode 아래에 행 복사 : alt + shigr + 방향키
