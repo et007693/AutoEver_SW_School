@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>animation</title>
+    <style>
+      div {
+        width: 100px;
+        height: 100px;
+        border-color: red;
+        animation-name: bgchange;
+        animation-duration: 5s;
+        animation-iteration-count: infinite;
+      }
+      @keyframes bgchange {
+        0% {
+          background-color: red;
+        }
+        25% {
+          background-color: orange;
+        }
+        50% {
+          background-color: yellow;
+        }
+        100% {
+          background-color: green;
+        }
+      }
+
+      #container {
+        width: 500px;
+      }
+      .box {
+        width: 100px;
+        height: 100px;
+        float: left;
+        margin: 50px;
+      }
+      #box1 {
+        background-color: #4cff00;
+        border: 1px solid transparent;
+        animation-name: shape; /* 애니메이션 지정 */
+        animation-duration: 3s; /* 애니메이션 실행 시간 */
+        animation-iteration-count: infinite;
+      }
+      #box2 {
+        background-color: #8f06b0;
+        border: 1px solid transparent;
+        animation-name: rotate; /* 애니메이션 지정 */
+        animation-duration: 3s; /* 애니메이션 실행 시간 */
+        animation-iteration-count: infinite;
+      }
+
+      @keyframes shape {
+        /* shape 애니메이션 정의 */
+        from {
+          border: 1px solid transparent; /* 1px짜리 투명한 테두리 */
+        }
+        to {
+          border: 1px solid #000; /* 검정색 테두리 */
+          border-radius: 50%; /* 테두리를 둥글게 */
+        }
+      }
+
+      @keyframes rotate {
+        /* rotate 애니메이션 정의 */
+        from {
+          transform: rotate(0deg); /* 시작은 0도에서 */
+        }
+        to {
+          transform: rotate(45deg); /* 45도까지 회전 */
+        }
+      }
+
+      .pause {
+        width: 100px;
+        height: 100px;
+        background-color: red;
+        position: relative;
+        animation-name: move;
+        animation-duration: 10s;
+        animation-fill-mode: forwards;
+        animation-play-state: paused;
+      }
+      @keyframes move {
+        from {
+          left: 0;
+        }
+        to {
+          left: 300px;
+        }
+      }
+
+      @keyframes rainbow {
+        0% {
+          background-color: red;
+        }
+
+        16% {
+          background-color: orange;
+        }
+
+        32% {
+          background-color: yellow;
+        }
+
+        48% {
+          background-color: green;
+        }
+
+        64% {
+          background-color: blue;
+        }
+
+        80% {
+          background-color: navy;
+        }
+        100% {
+          background-color: purple;
+        }
+      }
+
+      .rainbow {
+        width: 100px;
+        height: 100px;
+        animation: rainbow 7s infinite;
+      }
+    </style>
+  </head>
+  <body>
+    <div></div>
+    <br />
+
+    <div id="container">
+      <div class="box" id="box1"></div>
+      <div class="box" id="box2"></div>
+    </div>
+    <br />
+
+    <div class="pause"></div>
+    <button id="start">start</button>
+    <button id="paused">paused</button>
+    <br />
+
+    <div class="rainbow"></div>
+    <script>
+      const box = document.querySelector("div.pause");
+      document.getElementById("start").addEventListener("click", function () {
+        box.style.animationPlayState = "running";
+      });
+      document.getElementById("paused").addEventListener("click", function () {
+        box.style.animationPlayState = "paused";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .flex-container {
+        width: 100%;
+        max-width: 1280px;
+        min-width: 768px;
+        display: flex;
+        background-color: blue;
+        justify-content: center;
+      }
+      .box {
+        width: 80px;
+        height: 80px;
+        background-color: orange;
+        border: 3px dashed red;
+        text-align: center;
+        align-content: center;
+        margin: 2px;
+      }
+
+      nav {
+        flex-grow: 1;
+        flex-shrink: 1;
+        background-color: rgb(10, 10, 41);
+        display: flex;
+        gap: 10px;
+        margin: 0 5px;
+      }
+
+      nav a {
+        color: white;
+        text-decoration: none;
+        align-content: center;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+      }
+
+      nav a:hover {
+        background-color: #aaa;
+        transition: 0.3s;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="flex-container">
+      <div class="box">1</div>
+      <nav>
+        <a href="">메뉴 1</a>
+        <a href="">메뉴 2</a>
+        <a href="">메뉴 3</a>
+        <a href="">메뉴 4</a>
+      </nav>
+      <div class="box">3</div>
+    </div>
+  </body>
+</html>
