@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css"
+    />
+    <script
+      src="https://kit.fontawesome.com/6daca47dc2.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>현대모비스 홈페이지</title>
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        background-color: grey;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 30px;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+      }
+
+      nav i {
+        margin: 10px;
+        padding: 10px;
+        color: white;
+      }
+
+      .logo {
+        margin: 25px 0px 0px 0px;
+        width: 60%;
+      }
+
+      .menu {
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 20px;
+        align-items: center;
+      }
+
+      .icon {
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .main-wrap {
+        display: flex;
+        position: relative;
+        flex-direction: row;
+      }
+
+      .video-wrap {
+        height: 90%;
+      }
+
+      .background-video {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .main-content {
+        position: absolute;
+        width: 100%;
+        color: white;
+        margin-left: 50px;
+      }
+
+      .main-title {
+        font-size: 60px;
+        font-weight: bolder;
+      }
+
+      .main-text {
+        font-weight: bold;
+      }
+
+      .controls {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+      }
+
+      .controls i.dot:not(.active) {
+        font-size: 5px;
+      }
+
+      .controls i.dot.active {
+        font-size: 25px;
+        /* font-size: 10px; */
+      }
+
+      .main-menu {
+        position: inherit;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="">
+        <img
+          class="logo"
+          src="https://www.mobis.com/resources/img/renew/common/logo_w.png"
+          alt=""
+        />
+      </div>
+      <nav>
+        <div class="menu">회사정보</div>
+        <div class="menu">모빌리티 기술</div>
+        <div class="menu">지속가능 경영</div>
+        <div class="menu">투자정보</div>
+        <div class="icon">
+          <i class="fa-regular fa-bell"></i>
+          <i class="fa-solid fa-share-nodes"></i>
+          <i class="fa-solid fa-globe"></i>
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <i class="fa-solid fa-bars"></i>
+        </div>
+      </nav>
+    </header>
+    <main>
+      <div class="main-wrap">
+        <div class="video-wrap">
+          <video
+            preload="yes"
+            muted=""
+            autoplay=""
+            loop=""
+            class="background-video"
+          >
+            <source src="./images/Mobis_main_kv_01.mp4" />
+          </video>
+        </div>
+
+        <div class="main-content">
+          <div class="main-text">
+            <div class="main-text-1 slide active">
+              <p class="main-title">
+                <span
+                  >Lead the Shift in <br />Mobility, <br />Move the World beyond
+                  <br />Possibilities</span
+                >
+              </p>
+            </div>
+
+            <div class="main-text-2">
+              <p class="main-title">
+                <span>소프트웨어의 힘으로 <br />미래를 움직입니다.</span>
+              </p>
+              <p class="main-detail">
+                현대모비스는 소프트웨어와 하드웨어를 결합한 차별화된 모빌리티
+                솔루션을 제공합니다.
+              </p>
+            </div>
+
+            <div class="main-text-3">
+              <p class="main-title">미래 모빌리티 기술을 이끌어 갑니다.</p>
+              <p class="main-detail">
+                현대모비스는 보다 깨끗하고 안전한 이동 환경 혁신을 추구합니다
+              </p>
+            </div>
+          </div>
+
+          <div class="controls">
+            <i id="index-1" class="fa-regular fa-circle-dot dot active"></i>
+            <i id="index-2" class="fa-solid fa-circle dot"></i>
+            <i id="index-3" class="fa-solid fa-circle dot"></i>
+            <i class="fa-solid fa-play"></i>
+            <i id="prev" class="fa-solid fa-angle-left"></i>
+            <i id="next" class="fa-solid fa-angle-right"></i>
+          </div>
+
+          <div class="main-menu">
+            <div class="main-menu-1">
+              <p>모빌리티 기술</p>
+              <p>
+                현대모비스는 SW 및 연관 하드웨어를 통합한 플랫폼을 공급하여
+                스마트 모빌리티 시대를 선도합니다.
+              </p>
+              <p class="detail">자세히보기</p>
+            </div>
+
+            <div class="main-menu-2">
+              <p>지속가능경영</p>
+              <p>
+                성장과 나눔의 균형을 통해 글로벌 기업의 역할을 다하겠습니다.
+              </p>
+              <p class="detail">자세히보기</p>
+            </div>
+
+            <div class="main-menu-3">
+              <p>투자정보</p>
+              <p>2025.05.07 11:10AM</p>
+              <p>255,000원</p>
+              <p>-1500</p>
+              <p class="detail">자세히보기</p>
+            </div>
+
+            <div class="main-menu-4">
+              <p>A/S부품&#183;용품</p>
+              <p>
+                현대모비스는 고객에게 필요한 부품을 신속하게 공급하기 위해
+                최선을 다하고 있습니다.
+              </p>
+              <p class="detail">자세히보기</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <section>
+      <div class="news-wrap">
+        <div class="news-1 news">
+          <img src="" alt="" />
+          <p>2025.04.16</p>
+          <p>현대모비스 상해모터쇼 참가, 올해 중국시장 수주 2억불 목표!</p>
+          <p class="detail">자세히보기</p>
+        </div>
+
+        <div class="news-2 news">
+          <img src="" alt="" />
+          <p>2025.04.14</p>
+          <p>
+            [현대모비스] 전기차 배터리셀 발화 시, 자동 진압하는 기술 나왔다!
+          </p>
+          <p class="detail">자세히보기</p>
+        </div>
+
+        <div class="news-3 news">
+          <img src="" alt="" />
+          <p>2025.04.10</p>
+          <p>
+            현대모비스, 미 디트로이트에서 모빌리티 오픈 이노베이션 기회 찾는다!
+          </p>
+          <p class="detail">자세히보기</p>
+        </div>
+
+        <div class="news-4 news">
+          <img src="" alt="" />
+          <p>2025.04.07</p>
+          <p>
+            현대모비스, 인도에 통합 R&D 센터 개소... 글로벌 S/W 연구개발 허브로
+            육성한다!
+          </p>
+          <p class="detail">자세히보기</p>
+        </div>
+
+        <div class="news-5 news">
+          <img src="" alt="" />
+          <p>2025.04.02</p>
+          <p>현대모비스, 주요 차량 부품에 친환경 알루미늄 사용한다!</p>
+          <p class="detail">자세히보기</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="mobis-mdeia">
+        <p>Mobis Media</p>
+        <p>Mobis LiVE</p>
+        <a href="">MOBIS LIVE 바로가기</a>
+      </div>
+    </section>
+
+    <section>
+      <div class="recruit">
+        <p>더 넓은 미래를 향한 꿈의 도전</p>
+        <a href="">채용사이트 바로가기</a>
+
+        <div class="recruit-card-1">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+
+        <div class="recruit-card-2">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+
+        <div class="recruit-card-3">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+
+        <div class="recruit-card-4">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+
+        <div class="recruit-card-5">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+
+        <div class="recruit-card-6">
+          <img src="" alt="" />
+          <p></p>
+          <p></p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="esg">
+        <p>Sustainability</p>
+        <p>지속가능경영 KEY ISSUE</p>
+        <p>Green Transformation to 2045 Net-Zero</p>
+        <img src="" alt="" />
+
+        <p>NET_ZERO REPORT</p>
+        <p>
+          2045년 탄소중립 달성을 위한 의지·미래상·방향·속도를 상세히 담았습니다
+        </p>
+        <p>
+          현대모비스는 탄소중립 대외 선언과 함께 과학기반 감축목표 이니셔티브에
+          가입함으로써 순배출 제로를 위한 본격적인 여정을 시작하고자 합니다.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p>Investors</p>
+      <p>투자정보</p>
+
+      <div class="stock">
+        <p>실시간 주가정보</p>
+        <p>255,5000원</p>
+        <p>전일대비 -1500</p>
+        <p>등락률 -0.58%</p>
+        <p>2025년 05월 07일 11:10 기준</p>
+      </div>
+
+      <div>
+        <p>감사/사업보고</p>
+        <p>분기 및 연간 연결검토보고서</p>
+      </div>
+
+      <div>
+        <p>실적발표</p>
+        <p>분기별 경영실적 발표자료료</p>
+      </div>
+    </section>
+
+    <footer>
+      <p>Lead the Shift in Mobility, Move the World beyond Possivilities</p>
+
+      <div class="site">
+        <a href="">사이트안내</a>
+        <a href="">개인정보처리방침</a>
+        <a href="">영상정보 처리기기 운영방침</a>
+        <a href="">이용약관</a>
+        <a href="">이메일부단수집거부</a>
+        <a href="">사이버감사실</a>
+      </div>
+
+      <div class="Family-Site">
+        <p>Family Site</p>
+      </div>
+    </footer>
+
+    <script>
+      const active = document.querySelector(".active");
+    </script>
+  </body>
+</html>
