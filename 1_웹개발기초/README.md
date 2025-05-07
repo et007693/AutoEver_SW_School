@@ -107,7 +107,7 @@ position - static, relative, absolute, fixed, sticky
 
 # 0502 CSS - flex
 
-### flex
+## flex
 
 ```
 flex-direction(아이템 방향)
@@ -139,7 +139,7 @@ align-items(교차축 정렬)
     - baseline
 ```
 
-### CSS 전환
+## CSS 전환
 
 ```
 transition
@@ -185,9 +185,30 @@ animation
     }
 ```
 
-### 알게된 것
+## 알게된 것
 
     1. 주축 정렬은 justify-content, 교차 축 정렬은 align-items
     2. 부모 크기에 맞게 꽉 채우고 싶다면 flex-grow 사용, 위치만 균듷하게 싶다면 justify-content : space-around
     3. CSS 계산식 작성은 calc() 사용 ex) height: calc(120vh - 120px)
     4. transition 두 가지 적용하려면 쉼표 사용 ex)  transition: background-color 0.3s ease, transform 0.5s ease-in-out;
+
+# 0507 CSS - grid
+
+## Grid
+
+'''
+display : grid
+grid-template-columns : 한 영역당 갯수 및 너비 지정
+grid-template-rows : 한 영역당 갯수 및 너비 지정
+grid-template-areas : 영역 지정 -> grid-area를 통해 할당
+'''
+
+## media query
+
+## 알게된 것
+
+    1. repeat을 사용해서 한 줄에 몇 개를 배치할 수 있을지 결정
+    2. auto-fit을 사용하면 한 칸을 지정한 크기로 채움, minmax를 사용해서 최대/최소 설정 가능
+    3. 영역을 지정하지 않을 때 .으로 대체
+    4. video tag 아래 source로 넣어주면 자동재생 가능
+    <!-- 5. 자식 요소의 %를 사용하려면 부모 요소의 높이 지정 해주어야 함 -->
