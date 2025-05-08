@@ -13,16 +13,16 @@
 ```
 템플릿 문자열 : `${변수명}`
 데이터 타입
-- 원시 타입(값으로 저장)
-    String
-    Number
-    Boolean
-    undefined
-    null
-- 참조 타입(주소로 저장)
-    Object
-    Array - 자바와 달리 모든 자료형 가능
-    Function
+    원시 타입(값으로 저장)
+        String
+        Number
+        Boolean
+        undefined
+        null
+    참조 타입(주소로 저장)
+        Object
+        Array - 자바와 달리 모든 자료형 가능
+        Function
 
 연산자
     산술 연산자 : +, -, *, /, %, **
