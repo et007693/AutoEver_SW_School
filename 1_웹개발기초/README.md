@@ -196,12 +196,12 @@ animation
 
 ## Grid
 
-'''
+```
 display : grid
 grid-template-columns : 한 영역당 갯수 및 너비 지정
 grid-template-rows : 한 영역당 갯수 및 너비 지정
 grid-template-areas : 영역 지정 -> grid-area를 통해 할당
-'''
+```
 
 ## media query
 
@@ -211,4 +211,4 @@ grid-template-areas : 영역 지정 -> grid-area를 통해 할당
     2. auto-fit을 사용하면 한 칸을 지정한 크기로 채움, minmax를 사용해서 최대/최소 설정 가능
     3. 영역을 지정하지 않을 때 .으로 대체
     4. video tag 아래 source로 넣어주면 자동재생 가능
-    <!-- 5. 자식 요소의 %를 사용하려면 부모 요소의 높이 지정 해주어야 함 -->
+    <!-- 5. 자식 요소의 %를 사용하려면 부모 요소의 높이 지정 해주med어야 함 -->

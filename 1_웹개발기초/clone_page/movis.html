@@ -80,7 +80,7 @@
         position: absolute;
         width: 100%;
         color: white;
-        margin-left: 50px;
+        /* margin-left: 50px; */
       }
 
       .main-title {
@@ -90,6 +90,14 @@
 
       .main-text {
         font-weight: bold;
+      }
+
+      .slide {
+        display: none;
+      }
+
+      .slide.active {
+        display: block;
       }
 
       .controls {
@@ -107,10 +115,16 @@
         /* font-size: 10px; */
       }
 
-      .main-menu {
-        position: inherit;
+      .main-menu-wrap {
+        width: 100%;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-evenly;
+        margin-top: 100px;
+      }
+
+      .main-menu {
+        border: 1px solid gray;
+        justify-content: space-evenly;
       }
     </style>
   </head>
@@ -153,7 +167,7 @@
 
         <div class="main-content">
           <div class="main-text">
-            <div class="main-text-1 slide active">
+            <div class="main-text slide active">
               <p class="main-title">
                 <span
                   >Lead the Shift in <br />Mobility, <br />Move the World beyond
@@ -162,17 +176,17 @@
               </p>
             </div>
 
-            <div class="main-text-2">
+            <div class="main-text slide">
               <p class="main-title">
                 <span>소프트웨어의 힘으로 <br />미래를 움직입니다.</span>
               </p>
-              <p class="main-detail">
+              <p class="main-detail slide">
                 현대모비스는 소프트웨어와 하드웨어를 결합한 차별화된 모빌리티
                 솔루션을 제공합니다.
               </p>
             </div>
 
-            <div class="main-text-3">
+            <div class="main-text slide">
               <p class="main-title">미래 모빌리티 기술을 이끌어 갑니다.</p>
               <p class="main-detail">
                 현대모비스는 보다 깨끗하고 안전한 이동 환경 혁신을 추구합니다
@@ -181,16 +195,16 @@
           </div>
 
           <div class="controls">
-            <i id="index-1" class="fa-regular fa-circle-dot dot active"></i>
-            <i id="index-2" class="fa-solid fa-circle dot"></i>
-            <i id="index-3" class="fa-solid fa-circle dot"></i>
+            <i class="fa-regular fa-circle-dot dot active"></i>
+            <i class="fa-solid fa-circle dot"></i>
+            <i class="fa-solid fa-circle dot"></i>
             <i class="fa-solid fa-play"></i>
             <i id="prev" class="fa-solid fa-angle-left"></i>
             <i id="next" class="fa-solid fa-angle-right"></i>
           </div>
 
-          <div class="main-menu">
-            <div class="main-menu-1">
+          <div class="main-menu-wrap">
+            <div class="main-menu">
               <p>모빌리티 기술</p>
               <p>
                 현대모비스는 SW 및 연관 하드웨어를 통합한 플랫폼을 공급하여
@@ -199,7 +213,7 @@
               <p class="detail">자세히보기</p>
             </div>
 
-            <div class="main-menu-2">
+            <div class="main-menu">
               <p>지속가능경영</p>
               <p>
                 성장과 나눔의 균형을 통해 글로벌 기업의 역할을 다하겠습니다.
@@ -207,7 +221,7 @@
               <p class="detail">자세히보기</p>
             </div>
 
-            <div class="main-menu-3">
+            <div class="main-menu">
               <p>투자정보</p>
               <p>2025.05.07 11:10AM</p>
               <p>255,000원</p>
@@ -215,7 +229,7 @@
               <p class="detail">자세히보기</p>
             </div>
 
-            <div class="main-menu-4">
+            <div class="main-menu">
               <p>A/S부품&#183;용품</p>
               <p>
                 현대모비스는 고객에게 필요한 부품을 신속하게 공급하기 위해
@@ -230,14 +244,14 @@
 
     <section>
       <div class="news-wrap">
-        <div class="news-1 news">
+        <div class="news">
           <img src="" alt="" />
           <p>2025.04.16</p>
           <p>현대모비스 상해모터쇼 참가, 올해 중국시장 수주 2억불 목표!</p>
           <p class="detail">자세히보기</p>
         </div>
 
-        <div class="news-2 news">
+        <div class="news">
           <img src="" alt="" />
           <p>2025.04.14</p>
           <p>
@@ -246,7 +260,7 @@
           <p class="detail">자세히보기</p>
         </div>
 
-        <div class="news-3 news">
+        <div class="news">
           <img src="" alt="" />
           <p>2025.04.10</p>
           <p>
@@ -255,7 +269,7 @@
           <p class="detail">자세히보기</p>
         </div>
 
-        <div class="news-4 news">
+        <div class="news">
           <img src="" alt="" />
           <p>2025.04.07</p>
           <p>
@@ -265,7 +279,7 @@
           <p class="detail">자세히보기</p>
         </div>
 
-        <div class="news-5 news">
+        <div class="news">
           <img src="" alt="" />
           <p>2025.04.02</p>
           <p>현대모비스, 주요 차량 부품에 친환경 알루미늄 사용한다!</p>
@@ -287,37 +301,37 @@
         <p>더 넓은 미래를 향한 꿈의 도전</p>
         <a href="">채용사이트 바로가기</a>
 
-        <div class="recruit-card-1">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
         </div>
 
-        <div class="recruit-card-2">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
         </div>
 
-        <div class="recruit-card-3">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
         </div>
 
-        <div class="recruit-card-4">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
         </div>
 
-        <div class="recruit-card-5">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
         </div>
 
-        <div class="recruit-card-6">
+        <div class="recruit-card">
           <img src="" alt="" />
           <p></p>
           <p></p>
@@ -383,8 +397,6 @@
       </div>
     </footer>
 
-    <script>
-      const active = document.querySelector(".active");
-    </script>
+    <script src="./movis.js"></script>
   </body>
 </html>
