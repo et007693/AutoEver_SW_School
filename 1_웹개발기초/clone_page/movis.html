@@ -19,21 +19,19 @@
         margin: 0;
         padding: 0;
         background-color: grey;
+        box-sizing: border-box;
       }
 
-      header {
+      .nav-bar {
         position: absolute;
         display: flex;
         justify-content: space-between;
+        box-sizing: border-box;
         align-items: center;
         z-index: 10;
         height: 90px;
         width: 100%;
         padding: 0px 50px;
-      }
-
-      main {
-        height: 120vh;
       }
 
       .logo {
@@ -75,18 +73,13 @@
       }
 
       .main-wrap {
-        /* display: flex;
-        flex-direction: column; */
-        /* height: 100%; */
-      }
-
-      .video-wrap {
         position: relative;
-        height: 100%;
-        width: 100%;
+        height: 120vh;
       }
 
       .background-video {
+        position: absolute;
+        z-index: 0;
         width: 100%;
         height: 100%;
         object-fit: cover;
@@ -94,29 +87,32 @@
 
       .main-content {
         display: flex;
+        position: relative;
         color: white;
         flex-direction: column;
-        align-content: space-between;
+        justify-content: space-between;
         width: 100%;
         height: 100%;
       }
 
+      .main-slide-wrap {
+        position: relative;
+        top: 10%;
+        left: 11%;
+      }
+
       .main-text-wrap {
-        display: flex;
-        width: 100%;
-        height: 50vh;
-        padding: 0px 50px;
-        top: 50%;
-        align-content: center;
+        position: relative;
+        height: 415px;
       }
 
       .main-title {
         font-size: 60px;
-        font-weight: bolder;
+        font-weight: bold;
       }
 
       .main-text {
-        font-weight: bold;
+        font-size: 20px;
       }
 
       .slide {
@@ -129,8 +125,11 @@
 
       .controls {
         display: flex;
+        position: absolute;
         align-items: center;
         gap: 30px;
+        left: 0;
+        bottom: 0;
       }
 
       .controls i.dot:not(.active) {
@@ -139,59 +138,60 @@
 
       .controls i.dot.active {
         font-size: 25px;
-        /* font-size: 10px; */
       }
 
       .main-menu-wrap {
-        width: 100%;
         display: flex;
-        justify-content: space-evenly;
-        margin-top: 100px;
+        justify-content: flex-start;
+        backdrop-filter: blur(5px);
       }
 
       .main-menu {
+        flex: 1;
         border: 1px solid gray;
-        justify-content: space-evenly;
+        margin: 0px;
+        gap: 0px;
+        padding: 0px;
+        /* justify-content: space-evenly; */
       }
     </style>
   </head>
   <body>
     <header>
-      <img
-        class="logo"
-        src="https://www.mobis.com/resources/img/renew/common/logo_w.png"
-        alt=""
-      />
-      <nav>
-        <div class="menu-wrap">
-          <p class="menu">회사정보</p>
-          <p class="menu">모빌리티 기술</p>
-          <p class="menu">지속가능 경영</p>
-          <p class="menu">투자정보</p>
-        </div>
-        <div class="icon-wrap">
-          <i class="fa-regular fa-bell"></i>
-          <i class="fa-solid fa-share-nodes"></i>
-          <i class="fa-solid fa-globe"></i>
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <i class="fa-solid fa-bars"></i>
-        </div>
-      </nav>
+      <div class="nav-bar">
+        <img
+          class="logo"
+          src="https://www.mobis.com/resources/img/renew/common/logo_w.png"
+          alt=""
+        />
+        <nav>
+          <div class="menu-wrap">
+            <p class="menu">회사정보</p>
+            <p class="menu">모빌리티 기술</p>
+            <p class="menu">지속가능 경영</p>
+            <p class="menu">투자정보</p>
+          </div>
+          <div class="icon-wrap">
+            <i class="fa-regular fa-bell"></i>
+            <i class="fa-solid fa-share-nodes"></i>
+            <i class="fa-solid fa-globe"></i>
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <i class="fa-solid fa-bars"></i>
+          </div>
+        </nav>
+      </div>
     </header>
     <main>
       <div class="main-wrap">
-        <div class="video-wrap">
-          <video
-            preload="yes"
-            muted=""
-            autoplay=""
-            loop=""
-            class="background-video"
-          >
-            <source src="./images/Mobis_main_kv_01.mp4" />
-          </video>
-        </div>
-
+        <video
+          preload="yes"
+          muted=""
+          autoplay=""
+          loop=""
+          class="background-video"
+        >
+          <source src="./images/Mobis_main_kv_01.mp4" />
+        </video>
         <div class="main-content">
           <div class="main-slide-wrap">
             <div class="main-text-wrap">
@@ -203,7 +203,6 @@
                   >
                 </p>
               </div>
-
               <div class="main-text slide">
                 <p class="main-title">
                   <span>소프트웨어의 힘으로 <br />미래를 움직입니다.</span>
