@@ -1,6 +1,7 @@
 // 메인 콘텐츠, 버튼 클릭 시 내용 변경
 document.addEventListener("DOMContentLoaded", function () {
   const slides = document.querySelectorAll(".main-text-wrap .slide");
+  const dots = document.querySelectorAll(".controls .dot");
   const prevBtn = document.querySelector(".controls #prev");
   const nextBtn = document.querySelector(".controls #next");
 
@@ -9,7 +10,13 @@ document.addEventListener("DOMContentLoaded", function () {
   function showSlide(index) {
     slides.forEach((slide, i) => {
       slide.classList.toggle("active", i === index);
+      slide.classList.toggle("slide-up", i === index);
     });
+
+    dots.forEach((dot, i) => {
+      dot.className = "fa-solid fa-circle dot";
+    });
+    dots[index].className = "fa-regular fa-circle-dot dot active";
   }
 
   prevBtn.addEventListener("click", () => {
