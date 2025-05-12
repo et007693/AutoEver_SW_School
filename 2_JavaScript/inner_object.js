@@ -33,3 +33,24 @@ const text1 = "안녕하세요.";
 const text2 = text1.concat("오늘은 ", "날씨가 아주 별로에요.");
 const text3 = text1.concat(text2, "집에 가고 싶어요!!");
 console.log(text3);
+
+// forEach : 배열의 각 요소에 대한 반복 수행
+const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+numbers[1] = 100;
+console.log(numbers);
+numbers.forEach((num) => {
+  console.log(num);
+});
+
+// map : 배열의 각 용소를변형하여 새로운 배열 생성
+// const doubled = numbers.map((num) => num * 2);
+const doubled = numbers.map((num) => num * 2);
+console.log(doubled);
+
+// filter : 조건에 맞는 요소만 추출하여 새로운 배열 생성
+const even = numbers.filter((num) => num % 2 === 0);
+console.log(even);
+
+// reduce : 함수를 실행하여 하나의 결과값을 반환
+const sum = numbers.reduce((a, b) => a + b, 0);
+console.log(sum);
