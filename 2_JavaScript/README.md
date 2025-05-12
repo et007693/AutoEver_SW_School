@@ -173,3 +173,92 @@ let obj1 = new obj("new", 1)
 
     1. for ..of로 값을 바꿀 때, 원본 데이터는 바뀌지 않음
     2. 코드가 한줄일 때 {} 사용 안 해도 됨 ex) break, function()
+
+# 0512 JavaScript
+
+## DOM(Document Object Model)
+
+```
+노드 선택
+    document.getElementById : ID로 선택
+    document.getElementsByClassName : class로 선택
+    document.getElementsByTagName : tag로 선택
+    documnet.querySelector : CSS 선택자
+
+노드 조작
+    textContent
+    innerText
+    innerHTML
+
+    element.style.{css속성] = 변경값
+    element.classList.add : 속성 추가
+    element.classList.remove : 속성 삭제
+    element.classList.toggle
+    child.remove : 노드 삭제
+
+    element.addEventListener("{동작}", {Callback})
+```
+
+## event
+
+```
+이벤트 종류
+    onclick : 클릭
+    ondblclick : 더블클릭
+    onmouseover : hover
+    onmouseset : 마우스 빠져나갈 때
+    onmousemove : 포인터가 움직일 때
+    onwhell : 휠을 움직일 때
+    onkeypress : 키보드를 누르고 있는동안
+    onkeydown : 키보드를 누른 순간
+    onkeyon : 눌렀다가 뗀 순간
+    onfocus : hover
+    onblur : 포커스를 잃을 때
+    onsubmit : 폼이 전송될 때
+    onload : 리소스 로드가 끝날 때
+
+이벤트 등록
+    1. 인라인 방식
+    <button onclick="{함수명}"></button>
+    function 함수명() {
+        ...
+    }
+
+    2. 리스너 방식
+    const btn = document.querySelector("button")
+    btn.onclick = () => {
+        ...
+    }
+
+    3. 이벤트 등록 베서드 방식
+    const btn = document.querySelector("button")
+    btn.addEventListener("click", function() {
+        ...
+    })
+```
+
+## 정규표현식
+
+```
+사용법
+    var {name} = /sss/;
+
+메소드
+    test : 문자열에 패턴이 있는지 검사하고, Bool 값으로 반환
+    exec : 패턴이 일치하는 첫 번째 결과를 반환, 없으면 null
+    match : 패턴이 일치하는 모든 결과를 배열로 반환
+
+패턴 예시
+    g는 문자열 전체에서 모든 일치 항목을 찾도록 설정
+    ^는 부정 문자 클래스(not)
+    1. 숫자 찾기 : /[0-9]/
+    2. 알파벳 찾기 : /[a-zA-Z]/g
+    3. 숫자가 아닌 것 찾기 : /^[0-9]/g
+    4. 전화번호 형식 검사 : /\d{2,3}-\d{3,4}-\d{4}/
+```
+
+## 알게된 것
+
+1. const 객체의 값을 바꿀 수 있는 이유 : const는 주소만 변경이 불가능한 것이므로, 값은 변경 가능
+2. 요소 생성은 documnet.createElement, 요소 삭제는 element.delete()
+3. input에서 text를 가져오려면 input.value
