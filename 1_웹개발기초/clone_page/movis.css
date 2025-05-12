@@ -1,0 +1,188 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: grey;
+  box-sizing: border-box;
+}
+
+.nav-bar {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  box-sizing: border-box;
+  align-items: center;
+  z-index: 10;
+  height: 90px;
+  width: 100%;
+  padding: 0px 50px;
+}
+
+.logo {
+  width: 112px;
+  height: 38px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+i {
+  cursor: pointer;
+}
+
+nav i {
+  margin: 10px;
+  padding: 10px;
+  color: white;
+}
+
+.menu-wrap {
+  display: flex;
+  gap: 70px;
+}
+
+.menu {
+  color: white;
+  font-size: larger;
+  cursor: pointer;
+}
+
+.icon {
+  display: flex;
+  justify-content: space-between;
+}
+
+.main-wrap {
+  position: relative;
+  height: 120vh;
+}
+
+.background-video {
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.main-content {
+  position: absolute;
+  display: flex;
+  position: relative;
+  color: white;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+
+.main-slide-wrap {
+  position: relative;
+  top: 10%;
+  left: 11%;
+}
+
+.main-text-wrap {
+  position: relative;
+  height: 415px;
+}
+
+.main-title {
+  font-size: 60px;
+  font-weight: bold;
+}
+
+.main-text {
+  font-size: 20px;
+}
+
+.slide {
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+.controls {
+  display: flex;
+  position: absolute;
+  align-items: center;
+  gap: 30px;
+  left: 0;
+  bottom: 0;
+}
+
+.controls i.dot:not(.active) {
+  font-size: 5px;
+}
+
+.controls i.dot.active {
+  font-size: 25px;
+}
+
+.main-menu-wrap {
+  display: flex;
+  justify-content: flex-start;
+  backdrop-filter: blur(10px);
+}
+
+.main-menu {
+  flex: 1;
+  border: 0.8px solid gray;
+  padding: 60px;
+  font-size: 20px;
+}
+
+.main-menu:nth-child(4) {
+  background-color: maroon;
+}
+
+.detail {
+  font-size: 15px;
+  color: rgb(145, 145, 145);
+}
+
+.news-section {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+}
+
+.news-wrap {
+  /* position: relative; */
+  /* display: flex; */
+  margin-top: 200px;
+  justify-content: center;
+  height: 400px;
+}
+
+.news {
+  display: none;
+  /* transition: opacity 0.5s ease; */
+  width: 1000px;
+}
+
+.news-wrap .active {
+  display: block;
+}
+
+.news img {
+  width: 500px;
+}
+
+.news-detail .detail {
+  color: black;
+}
+
+.news-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: white;
+}
