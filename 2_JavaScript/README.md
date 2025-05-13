@@ -262,3 +262,17 @@ let obj1 = new obj("new", 1)
 1. const 객체의 값을 바꿀 수 있는 이유 : const는 주소만 변경이 불가능한 것이므로, 값은 변경 가능
 2. 요소 생성은 documnet.createElement, 요소 삭제는 element.delete()
 3. input에서 text를 가져오려면 input.value
+
+# 0513 - JavaScript
+
+## JSON
+
+```
+직렬화
+    const json = JSON.stringify(object)
+
+역직렬화
+    const object = JSON.parse(json)
+```
+
+## 알게된 것
