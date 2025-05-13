@@ -6,6 +6,7 @@ html {
   box-sizing: border-box;
 }
 
+/* header */
 .nav-bar {
   position: absolute;
   display: flex;
@@ -56,6 +57,7 @@ nav i {
   justify-content: space-between;
 }
 
+/* main */
 .main-wrap {
   position: relative;
   height: 120vh;
@@ -147,33 +149,29 @@ nav i {
   color: rgb(145, 145, 145);
 }
 
+/* news */
 .news-section {
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */
-  align-items: center;
-}
-
-.news-wrap {
-  /* position: relative; */
-  /* display: flex; */
-  margin-top: 200px;
   justify-content: center;
-  height: 400px;
+  align-items: center;
+  height: 90vh;
 }
 
 .news {
   display: none;
-  /* transition: opacity 0.5s ease; */
   width: 1000px;
 }
 
 .news-wrap .active {
-  display: block;
+  display: flex;
+  gap: 50px;
 }
 
 .news img {
   width: 500px;
+  height: 400px;
+  object-fit: cover;
 }
 
 .news-detail .detail {
