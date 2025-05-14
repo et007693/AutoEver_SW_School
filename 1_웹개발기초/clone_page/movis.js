@@ -56,3 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   showNews(newsCurrentSlide);
 });
+
+const familyBtn = document.querySelector(".footer-family-btn");
+const familyList = document.querySelector(".family-list");
+
+familyBtn.addEventListener("click", () => {
+  familyList.classList.toggle("active");
+});

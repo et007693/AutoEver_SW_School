@@ -8,6 +8,9 @@ main-content 부분이 video에 가려져서 나오지 않음
 -> z-index를 적용했음에도, 보이지 않음
 -> position : relative를 적용하여 해결
 
+site-map버튼을 클릭했을 때, 리스트 길이만큼 버튼이 위로 올라감
+-> 버튼을 relative로, 리스트를 absolute로 설정
+
 ## 알게된 것
 
 1. z-index를 사용하려면 position을 relative로 설정해줘야 함
@@ -20,3 +23,4 @@ main-content 부분이 video에 가려져서 나오지 않음
 7. flex 요소들의 너비를 같게 하려면 flex : 1
 8. forEach의 인자 1은 각 요소, 인자 2는 index
 9. class를 지웠다 없앴다는 toggle, 추가-제거는 add, remove
+10. 안 보이게 하는건 display : nont, 다시 보이게 하려면 display : block
