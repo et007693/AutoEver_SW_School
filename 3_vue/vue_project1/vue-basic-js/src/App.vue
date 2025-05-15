@@ -1,12 +1,12 @@
 <script setup>
-import DataBinding from "./components/DataBinding.vue";
-import ConditionRenderer from "./components/ConditionRenderer.vue";
-import IterableArray from "./components/IterableArray.vue";
-import ClassBinding from "./components/ClassBinding.vue";
-import Reacitve from "./components/Reacitve.vue";
-import Computed from "./components/Computed.vue";
-import Watch from "./components/Watch.vue";
-import Prac1 from "./components/Prac1.vue";
+import DataBinding from "./components/0514/DataBinding.vue";
+import ConditionRenderer from "./components/0514/ConditionRenderer.vue";
+import IterableArray from "./components/0514/IterableArray.vue";
+import ClassBinding from "./components/0514/ClassBinding.vue";
+import Reacitve from "./components/0514/Reacitve.vue";
+import Computed from "./components/0514/Computed.vue";
+import Watch from "./components/0514/Watch.vue";
+import Prac1 from "./components/0514/Prac1.vue";
 
 import { ref } from "vue";
 
@@ -28,7 +28,7 @@ import { ref } from "vue";
     <!-- <Reacitve /> -->
     <!-- <computed /> -->
     <!-- <Watch /> -->
-    <Prac1 />
+    <!-- <Prac1 /> -->
   </div>
 </template>
 
