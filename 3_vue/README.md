@@ -80,3 +80,29 @@ child
 
     1. computed 사용 이유 : 불필요한 함수의 호출을 방지, 리렌더링 시 함수 호출이 일어나지 않는 경우는 이전 값을 유지해줌
     2. 리렌더링 시 컴포넌트가 다시 호출 됨 -> 함수가 다시 재시작 됨
+
+# 0516 - Vue
+
+## local storage
+
+```
+값 저장
+localStorage.setItem("{key}", JSON.stringify(value));
+
+
+값 불러오기
+    const store = localStorage.getItem("{object_name}")
+    const object = ref(
+        store
+            ? JSON.parse(store)
+            : 데이터 선언
+    )
+```
+
+## 알게된 것
+
+    1. index가 필요할 경우
+        <li v-for="(example, <strong>index</strong>) for examples" :key="index">
+    2. 위의 index를 받아 삭제하기 위해서 splice() 사용
+        array.splice(startIdx, deleteCnt)
+    3. filter는 배열을 반환, find는 객체를 반환
