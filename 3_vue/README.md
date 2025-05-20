@@ -106,3 +106,162 @@ localStorage.setItem("{key}", JSON.stringify(value));
     2. 위의 index를 받아 삭제하기 위해서 splice() 사용
         array.splice(startIdx, deleteCnt)
     3. filter는 배열을 반환, find는 객체를 반환
+
+# 0519 - Vue
+
+## router
+
+```
+3가지 설정해주어야 함
+main.js
+    import router from "./router"
+
+    app.use(router)
+
+router / index.js
+    import { craeteRouter, createWebHistory } from "vue-router"
+
+    const router = createRouter({
+        history : createWebHistory(""),
+        routes: [
+            {
+                path: "/",
+                name: "{name}",
+                component: () => import("../components/{c_name}"),
+                children : [
+                    {path : "/{path1}", component : {C_name1}},
+                    {path : "/{path2}", component : {C_name2}},
+                ]
+            }
+        ]
+    })
+
+App.vue
+    <router-link to="/{name}"
+    <router-view></router-view>
+
+    or
+
+    import { useRouter } from 'vue-router';
+
+    const router = useRouter();
+    function goToHome() {
+        router.push('/home');
+    }
+
+```
+
+## tailwind
+
+```
+tailwind 세팅
+    yarn create vite vite-tailwind-app --template vue
+    cd vite-tailwind-app
+    yarn install
+
+    yarn add -D tailwindcss@3 postcss autoprefixer
+    npx tailwindcss init -p
+
+postcss.config.js
+    module.exports = {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+    }
+
+src/assets/tailwind.css
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+main.js
+    import './assets/tailwind.css'
+
+tailwind.config.js
+    module.exports = {
+    content: [
+        "./index.html",
+        "./src/**/*.{vue,js,ts,jsx,tsx}"
+    ],
+    theme: {
+        extend: {},
+    },
+    plugins: [],
+    }
+
+```
+
+# 0520 - Vue
+
+## pinia
+
+```
+설치
+yarn add pinia
+yarn add pinia-plugin-persistedstate
+
+
+store / {store.js}
+    import { defineStore } from 'pinia';
+    export const useState = defineStore("{name}", {
+        state: () => ({
+            value1 : "{defaultValue}",
+            value2 : "",
+        }),
+        actions: {
+            func1({param}) : {
+                this.value2 = param
+            }
+        }
+    })
+
+.vue
+    import { useState } from '@/stores/{storeName}'
+    const {name} = useState();
+
+    <div @click="name.func1"></div>
+```
+
+## modal
+
+```
+stores / modal.js
+    import { defineStore } from "pinia";
+    export const { statename } = defineStore("{name}", {
+        state: () => ({
+            "속성1" : value1,
+            "속성2" : value2,
+            "속성3" : []
+        }),
+        actions: {
+            callback1({ param1, param2, array }) {
+                this.속성1 = param1;
+                this.array = array
+            }
+        }
+    })
+
+components / modal.vue
+    <div v-if="modal.isOpen" class="background">
+        <div class="modal">
+
+        </div>
+    </div>
+
+    import { useModalState } from "@/stores/Modal.js"
+    const modal = useModalState();
+
+App.vue에 Component 등록 필요
+```
+
+## 알게된 것
+
+1. modal은 전역 변수룰 통해 open, close, 버튼 갯수 등을 설정
+2. modal의 경우, 항상 존재해야 하므로 app에 등록이 필요함
+3. button 갯수를 설정하고 싶다면 버튼 array를 전달하고, v-for를 사용해서, 전달된 갯수만큼 버튼 생성
+4. array에 함수도 전달 가능 ex) [{ onClick: () => {} }]
+5. 여러개를 전달할 때는 onClick: () => {
+   func1;
+   func2;
+   }
