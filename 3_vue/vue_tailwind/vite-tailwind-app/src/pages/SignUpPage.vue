@@ -1,170 +1,205 @@
 <template>
-  <div class="signup-container">
-    <div class="signup-box">
-      <h2>회원가입</h2>
-      <form @submit.prevent="handleSignUp">
-        <div class="input-group">
-          <label for="name">이름</label>
-          <input
-            v-model="name"
-            id="name"
-            type="text"
-            required
-            placeholder="홍길동"
-          />
-        </div>
+  <div
+    class="flex flex-col items-center justify-center min-h-screen bg-white px-4"
+  >
+    <h1 class="text-2xl font-semibold mb-8">Sign Up</h1>
 
-        <div class="input-group">
-          <label for="email">이메일</label>
-          <input
-            v-model="email"
-            id="email"
-            type="email"
-            required
-            placeholder="you@example.com"
-          />
-        </div>
-
-        <div class="input-group">
-          <label for="password">비밀번호</label>
-          <input
-            v-model="password"
-            id="password"
-            type="password"
-            required
-            placeholder="••••••••"
-          />
-        </div>
-
-        <div class="input-group">
-          <label for="confirmPassword">비밀번호 확인</label>
-          <input
-            v-model="confirmPassword"
-            id="confirmPassword"
-            type="password"
-            required
-            placeholder="••••••••"
-          />
-        </div>
-
-        <button type="submit" class="submit-btn">회원가입</button>
-      </form>
-      <p class="login-link">
-        이미 계정이 있으신가요?
-        <a href="#">로그인</a>
+    <div class="w-full max-w-md mx-auto space-y-4">
+      <BaseInput
+        v-model="form.email"
+        placeholder="이메일"
+        @input="validateEmail"
+      />
+      <p
+        v-if="form.email"
+        :class="isEmailValid ? 'text-green-500' : 'text-red-500'"
+      >
+        {{ emailMessage }}
       </p>
+
+      <BaseInput
+        v-model="form.password"
+        placeholder="패스워드"
+        type="password"
+        @input="validatePassword"
+      />
+
+      <p
+        v-if="form.password"
+        :class="isPasswordValid ? 'text-green-500' : 'text-red-500'"
+      >
+        {{ passwordMessage }}
+      </p>
+
+      <BaseInput
+        v-model="form.confirmPassword"
+        placeholder="패스워드"
+        type="password"
+        @input="validateConfirmPassword"
+      />
+
+      <p
+        v-if="form.confirmPassword"
+        :class="isConfirmPasswordValid ? 'text-green-500' : 'text-red-500'"
+      >
+        {{ confirmPasswordMessage }}
+      </p>
+
+      <BaseInput v-model="form.name" placeholder="이름" />
+
+      <BaseButton :disabled="!canSubmit" @click="submit">NEXT</BaseButton>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { reactive, ref, computed } from "vue";
+import { useUserStore } from "@/stores/User";
+import { useModalState } from "@/stores/Modal";
+import { useRouter } from "vue-router";
+import axios from "axios";
+import BaseButton from "../components/base/BaseButton.vue";
+import BaseInput from "../components/base/BaseInput.vue";
 
-const name = ref("");
-const email = ref("");
-const password = ref("");
-const confirmPassword = ref("");
+// 전역변수
+const userStore = useUserStore();
+const setUser = userStore.setUser;
+const modal = useModalState();
+const router = useRouter();
 
-const handleSignUp = () => {
-  if (password.value !== confirmPassword.value) {
-    alert("비밀번호가 일치하지 않습니다.");
+// ✅ 상태 정의: 하나의 객체로 통합
+const form = reactive({
+  email: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+});
+
+// 메시지 및 유효성
+const emailMessage = ref("");
+const passwordMessage = ref("");
+const confirmPasswordMessage = ref("");
+const isEmailValid = ref(false);
+const isPasswordValid = ref(false);
+const isConfirmPasswordValid = ref(false);
+
+// 이메일 형식 및 중복 확인
+const validateEmail = async () => {
+  const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  if (!regex.test(form.email)) {
+    emailMessage.value = "이메일 형식이 올바르지 않습니다.";
+    isEmailValid.value = false;
     return;
   }
-  console.log("회원가입 정보:", {
-    name: name.value,
-    email: email.value,
-    password: password.value,
-  });
+
+  //const available = await exists(form.email);
+  const res = await axios.get(
+    `http://222.117.237.119:8111/auth/exists/${form.email}`
+  );
+  if (res.data) {
+    emailMessage.value = "사용 가능한 이메일입니다.";
+    isEmailValid.value = true;
+  } else {
+    emailMessage.value = "중복된 이메일입니다.";
+    isEmailValid.value = false;
+  }
 };
 
-const validEmail = async () => {
-  // const reget = /^[1-zA-z0-9_.]
+// 비밀번호 검사
+const validatePassword = () => {
+  const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,25}$/;
+  if (!regex.test(form.password)) {
+    passwordMessage.value = "숫자+영문자 조합으로 8자리 이상 입력해주세요!";
+    isPasswordValid.value = false;
+  } else {
+    passwordMessage.value = "안전한 비밀번호에요 :)";
+    isPasswordValid.value = true;
+  }
+};
+
+// 비밀번호 확인
+const validateConfirmPassword = () => {
+  if (form.password !== form.confirmPassword) {
+    confirmPasswordMessage.value = "비밀번호가 일치하지 않습니다.";
+    isConfirmPasswordValid.value = false;
+  } else {
+    confirmPasswordMessage.value = "비밀번호가 일치합니다 :)";
+    isConfirmPasswordValid.value = true;
+  }
+};
+
+// 제출 조건
+const canSubmit = computed(
+  () =>
+    isEmailValid.value &&
+    isPasswordValid.value &&
+    isConfirmPasswordValid.value &&
+    form.name.length > 0
+);
+
+// 제출 처리
+const submit = async () => {
+  try {
+    const payload = {
+      email: form.email,
+      pwd: form.password,
+      name: form.name,
+    };
+    const res = await axios.post(
+      "http://222.117.237.119:8111/auth/signup",
+      payload
+    );
+    console.log(res.data);
+    if (res.data) {
+      modal.Open({
+        title: "회원 가입 성공",
+        message: "환영합니다.",
+        buttons: [
+          {
+            label: "확인",
+            onClick: () => {
+              modal.Close();
+              router.push("/");
+            },
+          },
+        ],
+      });
+      setUser(payload);
+    } else {
+      modal.Open({
+        title: "회원 가입 실패",
+        message: "회원 가입에 실패하였습니다.",
+        buttons: [
+          {
+            label: "확인",
+            onClick: () => {
+              modal.Close();
+            },
+          },
+        ],
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    modal.Open({
+      title: "서버 오류",
+      message: "회원 가입에 실패하였습니다.",
+      buttons: [
+        {
+          label: "확인",
+          onClick: () => {
+            modal.Close();
+          },
+        },
+      ],
+    });
+    alert("가입 실패! 서버 오류 발생");
+  }
 };
 </script>
 
 <style scoped>
-.signup-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: #f0f2f5;
-}
-
-.signup-box {
-  width: 100%;
-  max-width: 420px;
-  background-color: #fff;
-  padding: 32px;
-  border-radius: 8px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
-h2 {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  color: #333;
-}
-
-.input-group {
-  margin-bottom: 18px;
-  text-align: left;
-}
-
-.input-group label {
-  display: block;
-  font-weight: 600;
-  font-size: 14px;
-  margin-bottom: 6px;
-  color: #555;
-}
-
-.input-group input {
-  width: 100%;
-  padding: 10px 12px;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
-  box-sizing: border-box;
-}
-
-.input-group input:focus {
-  border-color: #007bff;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #007bff;
-  color: white;
-  font-size: 16px;
-  font-weight: 600;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-top: 10px;
-  transition: background-color 0.3s;
-}
-
-.submit-btn:hover {
-  background-color: #0056b3;
-}
-
-.login-link {
-  margin-top: 16px;
-  font-size: 14px;
-  color: #666;
-}
-
-.login-link a {
-  color: #007bff;
-  text-decoration: none;
-}
-
-.login-link a:hover {
-  text-decoration: underline;
+.input-box {
+  @apply w-full px-4 py-3 border border-gray-400 rounded-full;
 }
 </style>

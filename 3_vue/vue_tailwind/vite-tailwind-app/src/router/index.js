@@ -1,16 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../pages/Home.vue";
-import About from "../pages/About.vue";
+import About from "../pages/About_p.vue";
 import Profile from "../pages/Profile.vue";
 import Login from "../pages/LoginPage.vue";
 import Signup from "../pages/SignUpPage.vue";
-import Layout from "./Layout.vue/";
-
-// const routes = [
-//   { path: "/", component: Home },
-//   { path: "/about", component: About },
-//   { path: "/profile/:username", component: Profile },
-// ];
+import Members from "../pages/Members.vue";
+import Layout from "../Layout.vue/";
+import ThemeSetting from "../pages/ThemeSetting.vue";
 
 const routes = [
   { path: "/", component: Login },
@@ -22,9 +18,9 @@ const routes = [
     path: "/home",
     component: Layout,
     children: [
-      { path: "/about", component: About },
-      { path: "profile/:username", component: Profile },
-      { path: "" },
+      { path: "", component: Home },
+      { path: "/members", component: Members },
+      { path: "/theme", component: ThemeSetting },
     ],
   },
 ];

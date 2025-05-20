@@ -1,35 +1,67 @@
 <template>
-  <div>
-    <h1>홈입니다</h1>
-    <p>가장 먼저 보이는 페이지입니다.</p>
-    <router-link to="/about">소개 페이지로 이동</router-link>
-    <br />
-    <router-link :to="`/profile/${name}`">프로필 페이지로 이동</router-link>
-    <br />
-    <input
-      v-model="name"
-      @keyup.enter="goToProfile"
-      class="border px-3 py-2 rounded w-full max-w-md mb-4"
-      placeholder=":이름을 입력하세요."
-    />
-    <button
-      @click="goToProfile"
-      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-    >
-      프로필 보기
-    </button>
+  <div class="user-info">
+    <p>이름 : {{ userInfo.name }}</p>
+    <p>이메일 : {{ userInfo.email }}</p>
+  </div>
+  <div class="min-h-screen bg-transparent flex items-center justify-center p-4">
+    <div class="grid grid-cols-2 gap-4 w-full max-w-4xl">
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/members')"
+      >
+        회원리스트
+      </button>
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/boards')"
+      >
+        게시판
+      </button>
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/category')"
+      >
+        카테고리
+      </button>
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/theme')"
+      >
+        테마 설정
+      </button>
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/category')"
+      >
+        카테고리 설정
+      </button>
+      <button
+        class="bg-transparent border border-white text-white font-semibold py-6 rounded-lg"
+        @click="navigateTo('/Chat')"
+      >
+        채팅
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { onMounted } from "vue";
+import { useUserStore } from "@/stores/User";
 
-const name = ref("");
 const router = useRouter();
-const goToProfile = () => {
-  router.push(`profile/${name.value}`);
-};
-</script>
+const userStore = useUserStore();
+const userInfo = userStore.userInfo;
 
-<style scoped></style>
+const navigateTo = (path) => {
+  router.push(path);
+};
+
+onMounted(() => {
+  const isLogin = localStorage.getItem("isLogin");
+  if (isLogin !== "TRUE") {
+    router.push("/");
+  }
+});
+</script>
