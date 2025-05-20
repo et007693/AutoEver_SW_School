@@ -265,3 +265,4 @@ App.vue에 Component 등록 필요
    func1;
    func2;
    }
+6. 이미 track 된 파일은 git add -u
