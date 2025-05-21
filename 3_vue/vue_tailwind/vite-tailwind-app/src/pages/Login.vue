@@ -77,14 +77,14 @@ async function onLogin() {
       modal.Open({
         title: "로그인 실패",
         message: "이메일 또는 비밀번호를 확인하세요",
-        buttons: [{ label: "확인", onclick: () => modal.Close() }],
+        buttons: [{ label: "확인", onClick: () => modal.Close() }],
       });
     }
   } catch (err) {
     modal.Open({
       title: "서버 통신 에러",
       message: "서버 상태를 확인해주세요.",
-      buttons: [{ label: "확인", onclick: () => modal.Close() }],
+      buttons: [{ label: "확인", onClick: () => modal.Close() }],
     });
   }
 }

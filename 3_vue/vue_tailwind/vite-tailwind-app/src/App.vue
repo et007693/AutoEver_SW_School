@@ -5,6 +5,7 @@
   >
     <router-view />
     <Modal />
+    <ImageUploader />
   </div>
 </template>
 
@@ -13,4 +14,6 @@ import { useThemeStore } from "@/stores/theme";
 import Modal from "./components/base/BaseModal.vue";
 
 const themeStore = useThemeStore();
+
+import ImageUploader from "./pages/ImageUploader.vue";
 </script>

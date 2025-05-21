@@ -57,9 +57,14 @@ import { reactive, ref, computed } from "vue";
 import { useUserStore } from "@/stores/User";
 import { useModalState } from "@/stores/Modal";
 import { useRouter } from "vue-router";
+import { useAuthApi } from "../api/auth";
+
 import axios from "axios";
 import BaseButton from "../components/base/BaseButton.vue";
 import BaseInput from "../components/base/BaseInput.vue";
+
+// API
+const { signup, exists } = useAuthApi;
 
 // 전역변수
 const userStore = useUserStore();
@@ -139,6 +144,24 @@ const canSubmit = computed(
 
 // 제출 처리
 const submit = async () => {
+  const res = await signup(form.email, form.password, form.name);
+  if (res.data) {
+    router.push("/");
+  } else {
+    modal.Open({
+      title: "회원 가입 실패",
+      message: "회원 가입에 실패하였습니다.",
+      buttons: [
+        {
+          label: "확인",
+          onClick: () => {
+            modal.Close();
+          },
+        },
+      ],
+    });
+  }
+
   try {
     const payload = {
       email: form.email,

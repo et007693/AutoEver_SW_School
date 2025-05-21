@@ -1,9 +1,9 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../pages/Home.vue";
-import About from "../pages/About_p.vue";
-import Profile from "../pages/Profile.vue";
-import Login from "../pages/LoginPage.vue";
-import Signup from "../pages/SignUpPage.vue";
+// import About from "../pages/About_p.vue";
+// import Profile from "../pages/Profile.vue";
+import Login from "../pages/Login.vue";
+import Signup from "../pages/SignUp.vue";
 import Members from "../pages/Members.vue";
 import Layout from "../Layout.vue/";
 import ThemeSetting from "../pages/ThemeSetting.vue";
