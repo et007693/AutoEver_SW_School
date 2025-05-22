@@ -129,8 +129,8 @@ router / index.js
                 name: "{name}",
                 component: () => import("../components/{c_name}"),
                 children : [
-                    {path : "/{path1}", component : {C_name1}},
-                    {path : "/{path2}", component : {C_name2}},
+                    {path : "/{path1}", name1 : {name},  component : {C_name1}},
+                    {path : "/{path2}/:id", name2 : {name},  component : {C_name2}},
                 ]
             }
         ]
@@ -147,7 +147,11 @@ App.vue
     const router = useRouter();
     function goToHome() {
         router.push('/home');
+        router.push({name : {name}, param : {id} })
     }
+
+
+
 
 ```
 
@@ -266,3 +270,50 @@ App.vue에 Component 등록 필요
    func2;
    }
 6. 이미 track 된 파일은 git add -u
+
+# 0521 - mini project, vue
+
+## axios
+
+```
+
+```
+
+## firebase
+
+```
+
+```
+
+## 알게된 것
+
+# 0522 - vue
+
+## 게시판 만들기
+
+## 알게된 것
+
+1. 한 줄에 두 개씩 배치하고 싶으면, w-1/2를 설정
+2. template에 처리된 값을 넣고 싶다면 함수 선언 후, 데이터에 적용
+
+```
+<p>{{ func(param) }}</p>
+
+const func = (param) => {
+    return dayjs(para).fromNow();
+}
+```
+
+3. 전달한 id는 다음과 같이 받아서 사용
+
+```
+import { useRoute } from 'vue-router';
+const route = useRoute();
+const Id = route.params.id;
+```
+
+4. 엔터 눌렀을 때 입력
+
+```
+@keydown.enter.prevent="submit()"
+```
