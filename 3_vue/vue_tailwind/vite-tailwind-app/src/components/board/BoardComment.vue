@@ -25,10 +25,11 @@
         v-model="newComment"
         placeholder="댓글을 입력하세요..."
         class="w-full border rounded p-2 resize-none min-h-[80px] focus:outline-blue-400"
+        @keydown.enter.prevent="submitComment()"
       ></textarea>
       <div class="flex justify-end mt-2">
         <button
-          @click="submitComment"
+          @click="submitComment()"
           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
           등록
@@ -41,6 +42,8 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useBoardApi } from "../../api/board";
+import { useUserStore } from "../../stores/User";
+import { useModalState } from "../../stores/Modal";
 import dayjs from "dayjs";
 
 const props = defineProps({
@@ -50,6 +53,8 @@ const props = defineProps({
 const { commentList, commentWrite } = useBoardApi();
 const comments = ref([]);
 const newComment = ref("");
+const userEmail = useUserStore().userInfo.email;
+const modal = useModalState();
 
 const fetchData = async () => {
   const res = await commentList(props.id);
@@ -62,6 +67,14 @@ const fetchData = async () => {
 
 const formatDate = (date) => {
   return dayjs(date).format("YYYY.MM.DD HH:mm");
+};
+
+const submitComment = async () => {
+  const res = await commentWrite(userEmail, props.id, newComment.value);
+  if (res.data) {
+    newComment.value = "";
+    await fetchData();
+  }
 };
 
 onMounted(fetchData);
