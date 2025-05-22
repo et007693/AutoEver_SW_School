@@ -317,3 +317,17 @@ const Id = route.params.id;
 ```
 @keydown.enter.prevent="submit()"
 ```
+
+5. 자식 컴포넌트 함수 부모 컴포넌트에서 사용하기
+
+```
+자식
+defineExpose({
+  {functionName},
+});
+
+부모
+const {functionName} = ref(null);
+const {valueName} = await {functionName}.value.{자식 컴포넌트 함수 이름름}();
+
+```
