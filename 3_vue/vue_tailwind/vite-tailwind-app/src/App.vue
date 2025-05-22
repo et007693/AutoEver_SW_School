@@ -5,7 +5,7 @@
   >
     <router-view />
     <Modal />
-    <ImageUploader />
+    <!-- <ImageUploader /> -->
   </div>
 </template>
 
