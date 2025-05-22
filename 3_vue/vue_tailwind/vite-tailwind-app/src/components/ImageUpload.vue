@@ -1,15 +1,10 @@
 <template>
-  <div class="p-6 space-y-4">
+  <div>
     <input type="file" @change="handleFileChange" />
-    <button
-      @click="uploadImage"
-      class="bg-blue-500 text-white px-4 py-2 rounded"
-    >
-      업로드
-    </button>
-    <div v-if="imageUrl">
-      <img :src="imageUrl" alt="uploaded" class="mt-4 max-w-xs" />
+    <div v-if="imageName">
+      <img :src="imageName" alt="uploaded" class="mt-4 max-w-xs" />
     </div>
+    <button @click="uploadImage">업로드</button>
   </div>
 </template>
 
@@ -21,12 +16,10 @@ import {
   uploadBytes,
   getDownloadURL,
 } from "firebase/storage";
-import { app } from "@/api/firebase"; // 여기에서 firebase App 객체 export 하고 있어야 함
+import { app } from "@/api/firebase";
 
 const file = ref(null);
-const imageUrl = ref("");
-
-// 스토리지 인스턴스
+const imageName = ref("");
 const storage = getStorage(app);
 
 const handleFileChange = (e) => {
@@ -43,9 +36,14 @@ const uploadImage = async () => {
     const imageRef = storageRef(storage, `uploads/${file.value.name}`);
     await uploadBytes(imageRef, file.value);
     const url = await getDownloadURL(imageRef);
-    imageUrl.value = url;
+    imageName.value = url;
+    return url; // 업로드된 이미지 URL을 반환
   } catch (err) {
     alert("업로드 실패: " + err.message);
   }
 };
+
+defineExpose({
+  uploadImage,
+});
 </script>

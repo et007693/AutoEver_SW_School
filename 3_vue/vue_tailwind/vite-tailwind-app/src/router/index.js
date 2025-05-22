@@ -8,7 +8,7 @@ import Members from "../pages/Members.vue";
 import Layout from "../Layout.vue/";
 import ThemeSetting from "../pages/ThemeSetting.vue";
 import Category from "../pages/Category.vue";
-import Chat from "../pages/Chat.vue";
+// import Chat from "../pages/Chat.vue";
 import Board from "../pages/board/Board.vue";
 import BoardWrite from "../pages/board/BoardWrite.vue";
 import BoardDetail from "../pages/board/BoardDetail.vue";
@@ -30,7 +30,7 @@ const routes = [
       { path: "/boards/:id", name: BoardDetail, component: BoardDetail },
       { path: "/boards/write", name: BoardWrite, component: BoardWrite },
       { path: "/theme", component: ThemeSetting },
-      { path: "/chat", component: Chat },
+      // { path: "/chat", component: Chat },
     ],
   },
 ];

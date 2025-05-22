@@ -36,7 +36,7 @@
       </div>
 
       <div class="mb-6">
-        <!-- <ImageUpload /> -->
+        <ImageUpload ref="imageUploadRef" />
       </div>
 
       <button
@@ -55,13 +55,14 @@ import { useRouter } from "vue-router";
 import { useBoardApi } from "@/api/board";
 import { useModalState } from "../../stores/Modal";
 import { useUserStore } from "@/stores/User";
-// import ImageUpload from "../../components/ImageUpload.vue";
+import ImageUpload from "../../components/ImageUpload.vue";
 
 const { boardWrite, cateList } = useBoardApi();
 const modal = useModalState();
 const router = useRouter();
 const userStore = useUserStore();
 const catData = ref([]);
+const imageUploadRef = ref(null);
 
 const form = ref({
   email: userStore.userInfo.email,
@@ -81,6 +82,8 @@ const getData = async () => {
 };
 
 const submit = async () => {
+  const imageUrl = await imageUploadRef.value.uploadImage();
+  form.value.img = imageUrl;
   const { email, title, categoryId, content, img } = form.value;
   if (!email || !title || !content || !categoryId) {
     modal.Open({
