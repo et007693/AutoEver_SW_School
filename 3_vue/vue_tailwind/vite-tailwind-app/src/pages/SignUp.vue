@@ -64,7 +64,7 @@ import BaseButton from "../components/base/BaseButton.vue";
 import BaseInput from "../components/base/BaseInput.vue";
 
 // API
-const { signup, exists } = useAuthApi;
+const { signup, exists } = useAuthApi();
 
 // 전역변수
 const userStore = useUserStore();
@@ -97,7 +97,6 @@ const validateEmail = async () => {
     return;
   }
 
-  //const available = await exists(form.email);
   const res = await axios.get(
     `http://222.117.237.119:8111/auth/exists/${form.email}`
   );
@@ -216,7 +215,6 @@ const submit = async () => {
         },
       ],
     });
-    alert("가입 실패! 서버 오류 발생");
   }
 };
 </script>
