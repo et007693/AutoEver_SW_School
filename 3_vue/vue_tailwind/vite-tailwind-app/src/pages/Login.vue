@@ -42,36 +42,31 @@
 
 <script setup>
 import { ref, computed } from "vue";
-import axios from "axios";
 import { useRouter } from "vue-router";
-import { useModalState } from "@/stores/Modal";
+import { useModalState } from "@/stores/modal";
+import { useAuthApi } from "@/api/auth";
+import { useUserStore } from "../stores/User";
 
 const router = useRouter();
 const modal = useModalState();
+const { login } = useAuthApi();
+const userInfo = useUserStore().userInfo;
 
 const email = ref("");
 const pw = ref("");
 
-// 로그인 조건: 이메일과 비밀번호가 모두 입력되었을 때
 const canLogin = computed(() => email.value.length > 0 && pw.value.length > 0);
 
 async function onLogin() {
   if (!canLogin.value) return;
 
   try {
-    //const user = await login(id.value, pw.value);
-    const payload = {
-      email: email.value,
-      pwd: pw.value,
-    };
-    const res = await axios.post(
-      "http://222.117.237.119:8111/auth/login",
-      payload
-    );
+    const res = await login(email.value, pw.value);
+
     if (res.data) {
-      console.log("로그인 성공:");
-      localStorage.setItem("isLogin", "TRUE");
-      localStorage.setItem("email", email.value);
+      userInfo.email = email.value;
+      // localStorage.setItem("isLogin", "TRUE");
+      // localStorage.setItem("email", email.value);
       router.push("/home");
     } else {
       modal.Open({

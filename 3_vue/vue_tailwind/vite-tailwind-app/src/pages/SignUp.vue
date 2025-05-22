@@ -97,9 +97,7 @@ const validateEmail = async () => {
     return;
   }
 
-  const res = await axios.get(
-    `http://222.117.237.119:8111/auth/exists/${form.email}`
-  );
+  const res = await exists(form.email);
   if (res.data) {
     emailMessage.value = "사용 가능한 이메일입니다.";
     isEmailValid.value = true;
@@ -145,66 +143,23 @@ const canSubmit = computed(
 const submit = async () => {
   const res = await signup(form.email, form.password, form.name);
   if (res.data) {
-    router.push("/");
-  } else {
     modal.Open({
-      title: "회원 가입 실패",
-      message: "회원 가입에 실패하였습니다.",
+      title: "회원 가입 성공",
+      message: "환영합니다.",
       buttons: [
         {
           label: "확인",
           onClick: () => {
             modal.Close();
+            router.push("/");
           },
         },
       ],
     });
-  }
-
-  try {
-    const payload = {
-      email: form.email,
-      pwd: form.password,
-      name: form.name,
-    };
-    const res = await axios.post(
-      "http://222.117.237.119:8111/auth/signup",
-      payload
-    );
-    console.log(res.data);
-    if (res.data) {
-      modal.Open({
-        title: "회원 가입 성공",
-        message: "환영합니다.",
-        buttons: [
-          {
-            label: "확인",
-            onClick: () => {
-              modal.Close();
-              router.push("/");
-            },
-          },
-        ],
-      });
-      setUser(payload);
-    } else {
-      modal.Open({
-        title: "회원 가입 실패",
-        message: "회원 가입에 실패하였습니다.",
-        buttons: [
-          {
-            label: "확인",
-            onClick: () => {
-              modal.Close();
-            },
-          },
-        ],
-      });
-    }
-  } catch (err) {
-    console.error(err);
+    setUser(payload);
+  } else {
     modal.Open({
-      title: "서버 오류",
+      title: "회원 가입 실패",
       message: "회원 가입에 실패하였습니다.",
       buttons: [
         {
