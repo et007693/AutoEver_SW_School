@@ -9,6 +9,15 @@ import Info from "./0523/Info";
 import Clock from "./0523/Clock";
 import Counter from "./0523/Counter";
 
+import RefCnt from "./0526/RefCnt";
+import CreateRef from "./0526/CreateRef";
+import StyledCom from "./0526/StyledCom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Profile from "./pages/Profile";
+import Layout from "./pages/Layout";
+
 function App() {
   return (
     <>
@@ -22,7 +31,20 @@ function App() {
       {/* <NameCard /> */}
       {/* <Info /> */}
       {/* <Clock /> */}
-      <Counter />
+      {/* <Counter /> */}
+
+      {/* <RefCnt /> */}
+      {/* <CreateRef /> */}
+      {/* <StyledCom /> */}
+      <Router>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/profiles/:username" element={<Profile />} />
+          </Route>
+        </Routes>
+      </Router>
     </>
   );
 }
