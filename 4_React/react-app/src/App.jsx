@@ -18,10 +18,12 @@ import About from "./pages/About";
 import Profile from "./pages/Profile";
 import Layout from "./pages/Layout";
 
+import NewsList from "./prac/NewsList";
+
 function App() {
   return (
     <>
-      <h1>App.js입니다.</h1>
+      {/* <h1>App.js입니다.</h1> */}
       {/* <Members name="안유진" age={23} addr="대전" isAdult={true} />
       <Members name="장원영" age={22} addr="대전" isAdult={true} />
       <Members name="이서" age={19} addr="대전" isAdult={false} /> */}
@@ -36,13 +38,19 @@ function App() {
       {/* <RefCnt /> */}
       {/* <CreateRef /> */}
       {/* <StyledCom /> */}
-      <Router>
+      {/* <Router>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/profiles/:username" element={<Profile />} />
           </Route>
+        </Routes>
+      </Router> */}
+
+      <Router>
+        <Routes>
+          <Route path="/" element={<NewsList />} />
         </Routes>
       </Router>
     </>
