@@ -20,6 +20,13 @@ import Layout from "./pages/Layout";
 
 import NewsList from "./prac/NewsList";
 
+import UserStore from "./store/userStore";
+import PracStore from "./store/pracStore";
+import Signup from "./prac2/Signup";
+import Login from "./prac2/Login";
+import HomeLayout from "./prac2/HomeLayout";
+import HomeMain from "./prac2/HomeMain";
+
 function App() {
   return (
     <>
@@ -38,21 +45,38 @@ function App() {
       {/* <RefCnt /> */}
       {/* <CreateRef /> */}
       {/* <StyledCom /> */}
-      {/* <Router>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/profiles/:username" element={<Profile />} />
-          </Route>
-        </Routes>
-      </Router> */}
 
-      <Router>
+      {/* <UserStore>
+        <Router>
+          <Routes>
+            <Route element={<Layout />}>
+              <Route path="/" element={<Home />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/profiles/:username" element={<Profile />} />
+            </Route>
+          </Routes>
+        </Router>
+      </UserStore> */}
+
+      {/* <Router>
         <Routes>
           <Route path="/" element={<NewsList />} />
         </Routes>
-      </Router>
+      </Router> */}
+
+      <PracStore>
+        <Router>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+
+            {/* 중첩 라우팅 */}
+            <Route path="/" element={<HomeLayout />}>
+              <Route index element={<HomeMain />} />
+            </Route>
+          </Routes>
+        </Router>
+      </PracStore>
     </>
   );
 }
