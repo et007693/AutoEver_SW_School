@@ -216,3 +216,86 @@ Component.jsx
 3. vite는 VITE\_ 접두사를 붙이고, import.meta.env.{value}
 4. 뒤로가기를 했을 때 링크가 사라진다면, Link를 사용해서 새 창을 열거나, local storage에 저장
 5. 의존성 배열에 값을 할당하고, 버튼에 따라 값을 바꿀 때는 onClick={() => setName("{name}")} 과 같이 콜백 함수로 감싸야 함
+
+# 0527 - React, TypeScript
+
+## FE
+
+Component, Props -> 상태관리 -> 생명주기 -> 성능최적화 -> 라우터/중첩 -> 비동기 통신 -> 전역상태관리 -> 커스텀 훅
+
+## 전역 상태 관리
+
+```
+userstore
+App.jsx의 Router에 컴포넌트로 감싸면 children이 됨
+
+선언
+store.jsx
+    import { createContext, useState } from "react";
+    export const UserContext = createContext(null);
+
+    const UserStore = (props) => {
+    const [userId, setUserId] = useState("");
+    const [password, setPassword] = useState("");
+
+    return (
+        <UserContext.Provider
+        value={{
+            userId,
+            setUserId,
+            password,
+            setPassword,
+        }}
+        >
+        {props.children}
+        </UserContext.Provider>
+    );
+    };
+    export default UserStore;
+
+app.jsx
+    <UserStore>
+        <Router>
+            <Routes>
+            <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/profiles/:username" element={<Profile />} />
+            </Route>
+            </Routes>
+        </Router>
+    </UserStore>
+
+사용
+import { UserContext } from "../context/UserStore";
+
+const UserProfile = () => {
+  const { userId, password } = useContext(UserContext);
+}
+
+```
+
+## TypeScript
+
+```
+프로젝트 생성
+    yarn create vite my-ts-react-app --template react-ts
+    cd my-ts-react-app
+    yarn install
+    yarn dev
+
+변수 선언과 타입 지정
+    let {name}: {string, number, boolean} = {value};
+    let {array} : {string, number}[] = [value, ...]
+    function {name}({value}: string):string (
+        ...
+    )
+
+인터페이스
+    interface {name} {
+        name: string;
+        age: number
+    }
+
+
+```
