@@ -15,7 +15,7 @@ package 에어컨설계;
 import java.util.Scanner;
 
 public class AirconMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Scanner sc = new Scanner(System.in);
         System.out.println("에어컨 종류 선택 : 1:기본 / 2:스마트 / 3:휴대용");
         int type = sc.nextInt();
@@ -28,32 +28,30 @@ public class AirconMain {
                 System.out.println("설정 온도 입력 : ");
                 ac.setTemp(sc.nextInt());
                 System.out.println("바람 세기 입력 : ");
-                ac.setWindStep(sc.nextInt());
+                ac.setWindPower(sc.nextInt());
+                break;
 
             case 2:
-                ac = new SmartAircon();
+                ac = new SmartAirCon();
                 ac.powerOn();
-                System.out.println("스마트 에어컨 자동모드 설정");
+                System.out.println("스마트 에어컨 자동모드 설정 true / false");
                 boolean auto = sc.nextBoolean();
-                ac.autoSet();
                 if (!auto) {
-                    System.out.println("설정 온도 입력");
                     System.out.print("설정 온도 입력: ");
                     ac.setTemp(sc.nextInt());
-                    System.out.print("바람 세기 입력 (1~3): ");
-                    ac.setWindStep(sc.nextInt());
+                    System.out.print("바람 세기 입력 (1~3) : ");
+                    ac.setWindPower(sc.nextInt());
                 }
+                break;
+
             case 3:
-                ac = new PortableAircon();
+                ac = new PortableAirCon();
                 ac.powerOn();
-                System.out.print("설정 온도 입력: ");
+                System.out.print("설정 온도 입력 : ");
                 ac.setTemp(sc.nextInt());
-                System.out.print("바람 세기 입력 (1~3): ");
-                ac.setWindStep(sc.nextInt());
+                System.out.print("바람 세기 입력 (1~3) : ");
+                ac.setWindPower(sc.nextInt());
+                break;
         }
-
-        ac.powerOn();
-        System.out.println();
-
     }
 }
