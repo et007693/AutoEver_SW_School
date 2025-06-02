@@ -1,4 +1,4 @@
-package 입력;
+package Input;
 import java.util.Scanner;
 // 이름, 주소, 성별, 나이를 입력 받아서 출력하기
 

@@ -1,4 +1,4 @@
-package 싱글톤;
+package Singletone;
 
 public class SingletoneMain {
     public static void main(String[] args) {

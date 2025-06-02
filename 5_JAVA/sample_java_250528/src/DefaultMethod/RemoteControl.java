@@ -1,4 +1,4 @@
-package 디폴트메소드;
+package DefaultMethod;
 // 필드 : 모든 필드는 자동으로 final static으로 변환
 
 public interface RemoteControl {

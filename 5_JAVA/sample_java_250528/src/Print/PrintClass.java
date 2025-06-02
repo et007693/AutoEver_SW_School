@@ -1,4 +1,4 @@
-package 출력;
+package Print;
 // 자바는 표준 입출력 클래스를 사용해서 콘솔의 입력과 출력을 담당
 // System.in : 표준 입력
 // System.out : 표준 출력

@@ -1,4 +1,4 @@
-package 싱글톤;
+package Singletone;
 // 프로그램 전체에서 단 하나의 객체만 만들도록 보장함
 // 1. 메모리 절약 용도 : Spring Bean container
 // 2. 데이터 공유

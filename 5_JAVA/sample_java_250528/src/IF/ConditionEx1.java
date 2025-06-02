@@ -1,4 +1,4 @@
-package 조건문;
+package IF;
 import java.util.Scanner;
 
 public class ConditionEx1 {

@@ -1,4 +1,4 @@
-package 디폴트메소드;
+package DefaultMethod;
 
 public class DefaultMain {
 }

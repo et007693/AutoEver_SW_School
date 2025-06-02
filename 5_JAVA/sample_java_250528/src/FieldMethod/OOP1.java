@@ -1,4 +1,4 @@
-package 필드와메서드;
+package FieldMethod;
 
 public class OOP1 {
     public static void main(String[] args) {

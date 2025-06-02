@@ -1,6 +1,5 @@
-package 조건문;
+package IF;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class ConditionEx2 {
