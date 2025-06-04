@@ -302,3 +302,148 @@ Map(HashMap, TreeMap : 정렬된 key로 저장, Hashtable : 동기화 지원, Pr
     keySet / values / entrySet : 전체 key, 전체 value, 쌍 반환
 
 ```
+
+# 0604 - JAVA
+
+## Map
+
+```
+key-value 쌍으로 저장
+key 중복 불가
+
+HashMap : 순서 없음, 가장 많이 사용됨, null 허용
+Hashtable : HashMap과 유사하지만 동기화 지원 (멀티스레드 환경에 적합)
+TreeMap : 정렬된 key로 저장, 성능은 낮지만 순서가 필요할 때 사용
+Properties : 키와 값을 모두 문자열(String)로 제한한 Map, 설정 정보 저장에 사용
+
+put(key, value) : 요소 추가
+get(key) : key에 해당하는 value 반환
+remove(key) : key에 해당하는 쌍 삭제
+containsKey(key) / containsValue(value) : 존재여부 확인
+size / isEmpty / clear : 크기 확인 및 초기화
+keySet / values / entrySet : 전체 key, value 쌍 반환
+replace(key, value) : 값 변경
+```
+
+## Set
+
+```
+중복 X
+순서 X
+중복 제거 및 빠른 검색시 사용
+
+hashcode ---같음--- equals ---같음--- 동등 객체
+다름 |           다름 |
+     |               |
+     ㄴ------- 다른 객체
+
+```
+
+## Tree
+
+```
+이진 검색 트리
+자동 정렬
+중복 X
+
+데이터 정렬할 때, 중복 제외시 사용
+
+put : 값 추가
+get : 값 조회
+entrySet : 전체 key-value쌍 출력
+descendingMap : 내림차순 정렬
+
+```
+
+| **항목**  | **TreeSet**            | **TreeMap**          |
+| --------- | ---------------------- | -------------------- |
+| 구조      | 이진 검색 트리 (Set)   | 이진 검색 트리 (Map) |
+| 정렬 기준 | 요소 자체              | Key 기준             |
+| 중복      | 허용 안 함             | Key 중복 허용 안 함  |
+| 사용 예   | 정렬된 목록, 점수 모음 | 점수표, 키-값 정렬   |
+
+## Comparable / Comparator
+
+```
+객체를 정렬하는 데 사용
+
+Comparable
+    객체 자신이 정렬기준을 가짐
+
+    선언
+        public class Fruit implements Comparable<Fruit> {
+            private String name;
+            private int price;
+
+            public Fruit(String name, int price) {
+                this.name = name;
+                this.price = price;
+            }
+
+            @Override
+            public int compareTo(Fruit other) {
+                if (this.price > other.price) {
+                    return 1;  // 현재 객체가 더 비싸면 뒤로
+                } else if (this.price < other.price) {
+                    return -1; // 현재 객체가 더 싸면 앞으로
+                } else {
+                    return 0;  // 같으면 그대로
+                }
+            }
+        }
+
+    사용
+        List<Product> list = ...;
+        Collections.sort(list); // 자동으로 compareTo() 기준으로 정렬
+
+
+Comparator
+    외부에서 다른 기준을 적용할 수 있음
+    Comparator 인터페이스는 compare 메소드를 구현해야 함
+
+    선언 1
+        public class NameDescendingComparator implements Comparator<Fruit> {
+            @Override
+            public int compare(Fruit f1, Fruit f2) {
+                return f2.getName().compareTo(f1.getName()); // 이름 기준 내림차순
+            }
+        }
+
+    선언 2
+        public int compareTo(CarComp o) {
+        if (this.year == o.year) { // 비교
+            int rst = this.name.compareTo(o.name);
+            if (rst != 0) return rst; // 다르면 return
+            else {
+                return this.color.compareTo(o.color); // 같으면 2번째 조건으로 비교
+            }
+        } else if (this.year < o.year) return -1; // (오름차순 : -1, 내림차순 : 1, 같음 : 0)
+        else return 1;
+        }
+
+    선언 3
+        public int compare(Fruit f1, Fruit f2) {
+            return Integer.compare(f1.getPrice(), f2.getPrice());  // 오름차순
+        }
+
+
+
+    사용
+        List<Product> list = ...;
+        Collections.sort(list, new NameComparator()); // 이름 기준 정렬
+
+
+람다 함수
+    오름차순
+        products.sort(Comparator.comparing(Product::getPrice));
+    내림차순
+        products.sort(Comparator.comparing(Product::getPrice).reversed());
+
+
+```
+
+## 알게된 것
+
+1. public은 클래스 당 하나
+2. main에 다른 객체를 정의하고 싶다면 class만 사용
+3. 접근제어자(public : 어디서든 접근 가능, protected : 해당 클래스 내부에서만 접근 가능, protected : 같은 패키지 + 다른 패키지의 하위 클래스에서 접근 가능, default : 같은 패키지 내에서만 접근 가능) type{}
