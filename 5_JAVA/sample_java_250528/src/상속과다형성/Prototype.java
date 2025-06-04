@@ -5,8 +5,8 @@ public class Prototype {
     int channel;
     int volume;
 
-    public Prototype(boolean ispower, int cnl, int vol) {
-        this.isPower = ispower;
+    public Prototype(boolean isPower, int cnl, int vol) {
+        this.isPower = isPower;
         channel = cnl;
         volume = vol;
     }
@@ -15,5 +15,9 @@ public class Prototype {
         if (cnl > 0 && cnl < 1000){
             channel = cnl;
         } else System.out.println("채널 설정 범위가 아닙니다.");
+    }
+
+    public void setPower(boolean power) {
+        isPower = power;
     }
 }

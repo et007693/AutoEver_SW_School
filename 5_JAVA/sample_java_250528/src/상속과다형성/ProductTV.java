@@ -20,7 +20,6 @@ public class ProductTV extends Prototype {
         } else {
             System.out.println("볼륨 설정 범위가 아닙니다.");
         }
-        this.volume = vol;
     }
 
     @Override // 오버라이딩 관계 성립 여부를 문법적으로 체크해주는 어노테이션
