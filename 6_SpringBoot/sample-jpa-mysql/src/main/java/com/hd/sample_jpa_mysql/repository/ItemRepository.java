@@ -15,10 +15,10 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     List<Item> findByItemNumOrItemDetail(String itemName, String itemDetail);
 
     // @Query : JPQL, nativeQuery
-    @Query("SELECT i FROM Item i.itemDetail LIKE %:itemDetail% ORDER BY i.price desc")
-    List<Item> findByItemDetail(@Param("itemDetail") String itemDetail);
+//    @Query("SELECT i FROM Item i.itemDetail LIKE %:itemDetail% ORDER BY i.price desc")
+//    List<Item> findByItemDetail(@Param("itemDetail") String itemDetail);
 
-    // NativeQuery : 해당하는 DB의 실제 쿼리를 작성, 복잡한 쿼리를 작성 가능
-    @Query(value = "SELECT * FROM item i WHERE i.item_detail LIKE %:itemDetail% ORDER BY i.price desc", nativeQuery = true)
-    List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
+     // NativeQuery : 해당하는 DB의 실제 쿼리를 작성, 복잡한 쿼리를 작성 가능
+//    @Query(value = "SELECT * FROM item i WHERE i.item_detail LIKE %:itemDetail% ORDER BY i.price desc", nativeQuery = true)
+//    List<Item> findByItemDetailByNative(@Param("itemDetail") String itemDetail);
 }
