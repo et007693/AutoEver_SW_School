@@ -1,7 +1,6 @@
 package com.hd.sample_jpa_mysql.controller;
 
-import com.hd.sample_jpa_mysql.dto.LoginReqDto;
-import com.hd.sample_jpa_mysql.dto.SignUpReqDto;
+import com.hd.sample_jpa_mysql.dto.*;
 import com.hd.sample_jpa_mysql.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,24 +19,34 @@ public class AuthController {
     private final AuthService authService;
 
     // 회원 가입 여부 확인
-    @GetMapping("/exists/{email}")
-    public ResponseEntity<Boolean> existsByEmail(@PathVariable String email) {
-        boolean isExist = authService.isMember(email);
-        return ResponseEntity.ok(!isExist);
-    }
+//    @GetMapping("/exists/{email}")
+//    public ResponseEntity<Boolean> existsByEmail(@PathVariable String email) {
+//        boolean isExist = authService.isMember(email);
+//        return ResponseEntity.ok(!isExist);
+//    }
 
     // 회원 가입
-    @PostMapping("/signup") // Body에 정보를 싣는 방식, 정보가 보여지지 않음
-    public ResponseEntity<Boolean> signup(@RequestBody SignUpReqDto memberReqDto) {
-        boolean isSuccess = authService.signup(memberReqDto);
-        return ResponseEntity.ok(isSuccess);
+//    @PostMapping("/signup") // Body에 정보를 싣는 방식, 정보가 보여지지 않음
+//    public ResponseEntity<Boolean> signup(@RequestBody SignUpReqDto memberReqDto) {
+//        boolean isSuccess = authService.signup(memberReqDto);
+//        return ResponseEntity.ok(isSuccess);
+//    }
+    // 회원 가입
+    @PostMapping("/signup")  // Body에 정보를 싣는 방식, 정보가 보여지지 않음
+    public ResponseEntity<MemberResDto> signup(@RequestBody MemberReqDto memberReqDto) {
+        return ResponseEntity.ok(authService.signUp(memberReqDto));
     }
 
-    // 로그인
+//    // 로그인
+//    @PostMapping("/login")
+//    public ResponseEntity<Boolean> login(@RequestBody LoginReqDto loginReqDto) {
+//        boolean isSuccess = authService.login(loginReqDto.getEmail(), loginReqDto.getPwd());
+//        return ResponseEntity.ok(isSuccess);
+//    }
+// 로그인
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody LoginReqDto loginReqDto) {
-        boolean isSuccess = authService.login(loginReqDto.getEmail(), loginReqDto.getPwd());
-        return ResponseEntity.ok(isSuccess);
+    public ResponseEntity<TokenDto> login(@RequestBody MemberReqDto memberReqDto) {
+        return ResponseEntity.ok(authService.login(memberReqDto));
     }
 
 

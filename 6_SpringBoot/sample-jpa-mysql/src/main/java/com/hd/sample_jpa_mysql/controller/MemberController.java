@@ -2,11 +2,9 @@ package com.hd.sample_jpa_mysql.controller;
 
 import com.hd.sample_jpa_mysql.dto.MemberReqDto;
 import com.hd.sample_jpa_mysql.dto.MemberResDto;
-import com.hd.sample_jpa_mysql.repository.MemberRepository;
 import com.hd.sample_jpa_mysql.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.hql.internal.ast.tree.ResolvableNode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +20,6 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
-
 
     // 회원 전체 조회
     @GetMapping("/list")

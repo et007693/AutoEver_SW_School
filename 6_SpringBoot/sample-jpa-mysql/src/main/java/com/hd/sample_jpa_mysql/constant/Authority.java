@@ -1,4 +1,5 @@
 package com.hd.sample_jpa_mysql.constant;
 
-public class Authority {
+public enum Authority {
+    ROLE_USER,ROLE_ADMIN
 }

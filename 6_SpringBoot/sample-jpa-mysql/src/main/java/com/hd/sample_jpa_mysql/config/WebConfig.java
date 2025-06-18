@@ -1,0 +1,21 @@
+package com.hd.sample_jpa_mysql.config; // ← 너의 실제 패키지에 맞게 수정해줘
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+@Configuration
+public class WebConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOrigins(
+                        "http://localhost:3000",
+                        "http://localhost:5173",
+                        "https://myfrontend.com"
+                )
+                .allowedMethods("*")
+                .allowCredentials(true);
+    }
+}

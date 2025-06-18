@@ -1,5 +1,7 @@
 package com.hd.sample_jpa_mysql.entity;
 
+import com.hd.sample_jpa_mysql.constant.Authority;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,13 +32,21 @@ public class Member {
     private String image;
 
     private LocalDateTime regData;
-    @PrePersist // DB에 insert 되기전에 실행되는 메소드
-    private void prePersist() {
+
+//    @PrePersist // DB에 insert 되기전에 실행되는 메소드
+//    private void prePersist() {
+//        this.regData = LocalDateTime.now();
+//    }
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
+    @Builder
+    public Member(String name, String pwd, String email, String image, Authority authority) {
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.image = image;
         this.regData = LocalDateTime.now();
+        this.authority = authority;
     }
-
-
-
-
-
 }

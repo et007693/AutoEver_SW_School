@@ -75,7 +75,8 @@ public class MemberService {
 
     // Entity -> DTO 메서드
     private MemberResDto convertEntityToDto(Member member) {
-        MemberResDto memberResDto = new MemberResDto(rs.getString("email"), rs.getString("password"), rs.getString("name"), rs.getTimestamp("reg_date"));
+//        MemberResDto memberResDto = new MemberResDto(rs.getString("email"), rs.getString("password"), rs.getString("name"), rs.getTimestamp("reg_date"));
+        MemberResDto memberResDto = new MemberResDto();
         memberResDto.setEmail(member.getEmail());
         memberResDto.setPwd(member.getPwd());
         memberResDto.setName(member.getName());
