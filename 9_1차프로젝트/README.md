@@ -272,10 +272,14 @@ Page<{Entity}> findAll(Pageable pageable);
 
 ### 인증 정보 가져오기
 
+```
+
 Authentication authentication = SecurityContextHolder.getContext().getAuthentication().getName();
+```
 
 ### Spring Security + JWT CORS
 
+```
 // Security Config
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
@@ -289,6 +293,7 @@ config.setAllowCredentials(true); // 쿠키, Authorization 헤더 포함 허용
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+```
 
 # API
 
