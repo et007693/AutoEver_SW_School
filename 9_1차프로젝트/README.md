@@ -339,6 +339,19 @@ config.setAllowCredentials(true); // 쿠키, Authorization 헤더 포함 허용
     }
 ```
 
+# 예외처리
+
+```
+    throw new {exception_type}("{message}")
+    try{
+
+    } catch (Exception e) {
+        log.error("{log}, {}", e.getMessage());
+        return ResponseEntity.badRequest()
+            .body(new ApiResponseDto<>(false, e.getMessage(), null));
+    }
+```
+
 # Trouble Shooting
 
 ## 0620
@@ -372,3 +385,11 @@ jwt를 적용하여 토큰을 입력했는데도 401 에러 발생
 ```
 SecurityContextHolder.getContext().setAuthentication(auth);
 ```
+
+### 0624
+
+게시글 좋아요 기능을 만들던 중 user와 board가 n:m으로 매핑되어 있음
+board에 user를 어떻게 설정해주어야 하나?
+-> 1. 조인 관계가 이미 설정되어 있더라도 또, 매핑이 가능함
+-> 2. 즉 게시글 좋아요 기능은 N:M, user와 board는 1:N으로 두 번의 매핑을 해도 됨
+-> 3. 좋아요/싫어요 기능은 기존 board service에 작성하기보다 새로운 클래스로 만들어 하는 것이 좋음
