@@ -164,34 +164,37 @@ public interface {name} extends JpaRepository<{entity}, {pk_type}> {
 
 ### 연산자 키워드
 
-| 연산자 키워드          | 의미             | 예시 메서드 이름                          | SQL 동작 방식                                              |
-| ---------------------- | ---------------- | ----------------------------------------- | ---------------------------------------------------------- |
-| `findBy`               | 조회 시작        | `findByName(String name)`                 | `SELECT * FROM ... WHERE name = ?`                         |
-| `Distinct`             | 중복 제거        | `findDistinctByLastnameAndFirstname(...)` | `SELECT DISTINCT ... WHERE lastname = ? AND firstname = ?` |
-| `And`                  | AND 조건         | `findByNameAndPrice(String n, int p)`     | `WHERE name = ? AND price = ?`                             |
-| `Or`                   | OR 조건          | `findByItemNumOrItemDetail(...)`          | `WHERE item_num = ? OR item_detail = ?`                    |
-| `Is`, `Equals`         | 같음 / null 체크 | `findByFirstnameIs(String f)`             | `WHERE firstname = ? OR firstname IS NULL`                 |
-| `Between`              | 범위 검색        | `findByStartDateBetween(d1, d2)`          | `WHERE start_date BETWEEN ? AND ?`                         |
-| `LessThan`             | 작은 값          | `findByAgeLessThan(30)`                   | `WHERE age < ?`                                            |
-| `LessThanEqual`        | 작거나 같은 값   | `findByAgeLessThanEqual(30)`              | `WHERE age <= ?`                                           |
-| `GreaterThan`          | 큰 값            | `findByAgeGreaterThan(20)`                | `WHERE age > ?`                                            |
-| `GreaterThanEqual`     | 크거나 같은 값   | `findByAgeGreaterThanEqual(20)`           | `WHERE age >= ?`                                           |
-| `After`                | 이후 날짜        | `findByStartDateAfter(LocalDate d)`       | `WHERE start_date > ?`                                     |
-| `Before`               | 이전 날짜        | `findByStartDateBefore(LocalDate d)`      | `WHERE start_date < ?`                                     |
-| `IsNull`, `Null`       | NULL 여부        | `findByAgeIsNull()`                       | `WHERE age IS NULL`                                        |
-| `IsNotNull`, `NotNull` | NOT NULL 여부    | `findByAgeIsNotNull()`                    | `WHERE age IS NOT NULL`                                    |
-| `Like`                 | 패턴 일치        | `findByFirstnameLike(String s)`           | `WHERE firstname LIKE ?`                                   |
-| `NotLike`              | 패턴 불일치      | `findByFirstnameNotLike(String s)`        | `WHERE firstname NOT LIKE ?`                               |
-| `StartingWith`         | 시작 문자열      | `findByFirstnameStartingWith("Kim")`      | `LIKE 'Kim%'`                                              |
-| `EndingWith`           | 끝나는 문자열    | `findByFirstnameEndingWith("son")`        | `LIKE '%son'`                                              |
-| `Containing`           | 포함 문자열      | `findByFirstnameContaining("ho")`         | `LIKE '%ho%'`                                              |
-| `OrderBy`              | 정렬             | `findByAgeOrderByLastnameDesc(int age)`   | `WHERE age = ? ORDER BY lastname DESC`                     |
-| `Not`                  | 부정 조건        | `findByLastnameNot("Lee")`                | `WHERE lastname <> ?`                                      |
-| `In`                   | IN 절            | `findByAgeIn(List<Integer> ages)`         | `WHERE age IN (?, ?, ?)`                                   |
-| `NotIn`                | NOT IN 절        | `findByAgeNotIn(List<Integer> ages)`      | `WHERE age NOT IN (?, ?, ?)`                               |
-| `True`                 | Boolean 값 true  | `findByActiveTrue()`                      | `WHERE active = true`                                      |
-| `False`                | Boolean 값 false | `findByActiveFalse()`                     | `WHERE active = false`                                     |
-| `IgnoreCase`           | 대소문자 무시    | `findByFirstnameIgnoreCase("kim")`        | `WHERE UPPER(firstname) = UPPER(?)`                        |
+| 연산자 키워드          | 의미                        | 예시 메서드 이름                          | SQL 동작 방식                                              |
+| ---------------------- | --------------------------- | ----------------------------------------- | ---------------------------------------------------------- |
+| `findBy`               | 조건으로 조회               | `findByUsername(String username)`         | `SELECT * FROM ... WHERE username = ?`                     |
+| `existsBy`             | 존재 여부 반환 (true/false) | `existsByEmail(String email)`             | `SELECT COUNT(*) FROM ... WHERE email = ?` → 0/1           |
+| `countBy`              | 조건에 해당하는 row 개수    | `countByStatus(String status)`            | `SELECT COUNT(*) FROM ... WHERE status = ?`                |
+| `deleteBy`             | 조건에 맞는 데이터 삭제     | `deleteById(Long id)`                     | `DELETE FROM ... WHERE id = ?`                             |
+| `Distinct`             | 중복 제거                   | `findDistinctByLastnameAndFirstname(...)` | `SELECT DISTINCT ... WHERE lastname = ? AND firstname = ?` |
+| `And`                  | AND 조건                    | `findByNameAndPrice(String n, int p)`     | `WHERE name = ? AND price = ?`                             |
+| `Or`                   | OR 조건                     | `findByItemNumOrItemDetail(...)`          | `WHERE item_num = ? OR item_detail = ?`                    |
+| `Is`, `Equals`         | 같음 / null 체크            | `findByFirstnameIs(String f)`             | `WHERE firstname = ? OR firstname IS NULL`                 |
+| `Between`              | 범위 검색                   | `findByStartDateBetween(d1, d2)`          | `WHERE start_date BETWEEN ? AND ?`                         |
+| `LessThan`             | 작은 값                     | `findByAgeLessThan(30)`                   | `WHERE age < ?`                                            |
+| `LessThanEqual`        | 작거나 같은 값              | `findByAgeLessThanEqual(30)`              | `WHERE age <= ?`                                           |
+| `GreaterThan`          | 큰 값                       | `findByAgeGreaterThan(20)`                | `WHERE age > ?`                                            |
+| `GreaterThanEqual`     | 크거나 같은 값              | `findByAgeGreaterThanEqual(20)`           | `WHERE age >= ?`                                           |
+| `After`                | 이후 날짜                   | `findByStartDateAfter(LocalDate d)`       | `WHERE start_date > ?`                                     |
+| `Before`               | 이전 날짜                   | `findByStartDateBefore(LocalDate d)`      | `WHERE start_date < ?`                                     |
+| `IsNull`, `Null`       | NULL 여부                   | `findByAgeIsNull()`                       | `WHERE age IS NULL`                                        |
+| `IsNotNull`, `NotNull` | NOT NULL 여부               | `findByAgeIsNotNull()`                    | `WHERE age IS NOT NULL`                                    |
+| `Like`                 | 패턴 일치                   | `findByFirstnameLike(String s)`           | `WHERE firstname LIKE ?`                                   |
+| `NotLike`              | 패턴 불일치                 | `findByFirstnameNotLike(String s)`        | `WHERE firstname NOT LIKE ?`                               |
+| `StartingWith`         | 시작 문자열                 | `findByFirstnameStartingWith("Kim")`      | `LIKE 'Kim%'`                                              |
+| `EndingWith`           | 끝나는 문자열               | `findByFirstnameEndingWith("son")`        | `LIKE '%son'`                                              |
+| `Containing`           | 포함 문자열                 | `findByFirstnameContaining("ho")`         | `LIKE '%ho%'`                                              |
+| `OrderBy`              | 정렬                        | `findByAgeOrderByLastnameDesc(int age)`   | `WHERE age = ? ORDER BY lastname DESC`                     |
+| `Not`                  | 부정 조건                   | `findByLastnameNot("Lee")`                | `WHERE lastname <> ?`                                      |
+| `In`                   | IN 절                       | `findByAgeIn(List<Integer> ages)`         | `WHERE age IN (?, ?, ?)`                                   |
+| `NotIn`                | NOT IN 절                   | `findByAgeNotIn(List<Integer> ages)`      | `WHERE age NOT IN (?, ?, ?)`                               |
+| `True`                 | Boolean 값 true             | `findByActiveTrue()`                      | `WHERE active = true`                                      |
+| `False`                | Boolean 값 false            | `findByActiveFalse()`                     | `WHERE active = false`                                     |
+| `IgnoreCase`           | 대소문자 무시               | `findByFirstnameIgnoreCase("kim")`        | `WHERE UPPER(firstname) = UPPER(?)`                        |
 
 ### JQPQL | Querydsl | Spring Data JPA | NativeQuery | JDBC
 
@@ -378,7 +381,8 @@ config.setAllowCredentials(true); // 쿠키, Authorization 헤더 포함 허용
 
 ## 0623
 
-jwt를 적용하여 토큰을 입력했는데도 401 에러 발생
+### jwt를 적용하여 토큰을 입력했는데도 401 에러 발생
+
 -> 1. 토큰 유효성 검증을 통과 후 인증 정보 저장이 필요함
 -> 2. JwtAuthenticationFilter에 인증 정보 저장하는 코드 추가
 
@@ -386,10 +390,29 @@ jwt를 적용하여 토큰을 입력했는데도 401 에러 발생
 SecurityContextHolder.getContext().setAuthentication(auth);
 ```
 
-### 0624
+## 0624
 
-게시글 좋아요 기능을 만들던 중 user와 board가 n:m으로 매핑되어 있음
-board에 user를 어떻게 설정해주어야 하나?
--> 1. 조인 관계가 이미 설정되어 있더라도 또, 매핑이 가능함
--> 2. 즉 게시글 좋아요 기능은 N:M, user와 board는 1:N으로 두 번의 매핑을 해도 됨
+### 게시글 좋아요 기능을 만들던 중 user와 board가 n:m으로 매핑되어 있음
+
+board에 user를 어떻게 설정해주어야 하나?  
+-> 1. 조인 관계가 이미 설정되어 있더라도 또, 매핑이 가능함  
+-> 2. 즉 게시글 좋아요 기능은 N:M, user와 board는 1:N으로 두 번의 매핑을 해도 됨  
 -> 3. 좋아요/싫어요 기능은 기존 board service에 작성하기보다 새로운 클래스로 만들어 하는 것이 좋음
+
+## 0625
+
+### 좋아요/싫어요는 한번만, 둘 중 하나만 누를 수 있도록 제약 조건 설정
+
+constraints는 어떻게 작성하나?  
+-> 1. UniqueConstraint 어노테이션 활용  
+-> 2. Table(uniqueConstraints = {@UniqueConstraint(column = {"col_1", "col_2"})})
+
+### 좋아요/싫어요를 눌렀을 때, 누른 값에 대한 count 값을 보내는 것이 맞음
+
+### comment에 like_count, hate_count 컬럼이 있을 때, count 값은 어떻게 처리해야 할까?
+
+| 방법                                                         | 설명                       | 장점                          | 단점                         |
+| ------------------------------------------------------------ | -------------------------- | ----------------------------- | ---------------------------- |
+| A. 실시간 `countByCommentIdAndReactionType` 쿼리 (repo 사용) | 반응할 때마다 실시간 집계  | 정확성, 별도 컬럼 유지 불필요 | DB 부하 증가, 성능 저하 가능 |
+| B. `like_count`, `hate_count` 컬럼을 관리하며 +1/-1로 갱신   | DB에 count를 저장하고 갱신 | 빠름, 조회 시 효율적          | 동시성 이슈, 갱신 누락 위험  |
+| C. Redis로 count 캐싱 후 주기적 sync                         | 중간 계층 캐시 처리        | 속도 + 일관성                 | 시스템 복잡도 증가           |
