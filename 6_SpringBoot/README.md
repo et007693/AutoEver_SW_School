@@ -77,5 +77,129 @@ spring.mvc.pathmatch.matching-strategy=ant_path_matcher
 ```
 REST는 분산 시스템을 위한 아키텍쳐 스타일로, HTTP 기반 웹 서비스에서 가장 많이 사용되는 형식. REST API는 자원을 URI로 식별하고, GET, POST, PUT, DELETE를 통해 자원에 대한 행위를 정의함
 
+All
+    @RequestMapping("/url")
+
+GET
+    1. PathVariable을 활용
+    @GetMapping("/url/{variable}")
+    public String getVariable(@PathVariable String variable)
+    public String getVariable(@PathVariable("variable") String var)
+
+    2. RequestParam을 활용
+    // localhost:1111?name=value&email=email
+    public String getRequest(
+        @RequestParam String name,
+        @RequestParam String email,
+    )
+
+    3. DTO(Data Transfer Object) 객체 활용
+
+@PostMapping("/url")
+
+```
+
+# 0609 - SpringBoot
+
+## ORM
+
+```
+주요 구성요소
+    JPA
+    Hibernate
+    Spring Data JPA
+
+레이어드 아키텍쳐
+    dto - FE와 통신에 사용하는 데이터 전송용 객체체
+    entity - DB table과 직접 매핑되는 클래스스
+    repository - JPA 설계 명세(Hibernate), CRUD + 쿼리 메소드 정의의
+    service - 비즈니스 로직을 담당
+    exception - 예외 처리를 위한 클래스스
+    jwt - JWT 관련 인증 로직 담당
+    config - 애플리케이션의 설정 관련 파일(CORS, Swagger, JPA, 빈 등록)
+
+```
+
+# 0610 - SpringBoot
+
+## Pagination
+
+```
+pagination : 대량의 데이터를 페이지 단위로 나누어 부분적으로 조회하는 기법, 사용자가 페이지 이동 시 해당 페이지의 데이터를 서버에 새로 요청
+
+```
+
+## 연관 관계 매핑
+
+```
+
+```
+
+## 영속성 전이
+
+```
+부모 엔티티의 변화를 자식 엔티티에도 알림
+DB의 cascade와 비슷
+영속성 전이가 없다면 조회만 가능
+```
+
+## 지연로딩
+
+```
+객체를 실제로 사용할 때까지 DB에서 로딩하는 것을 지연시킴
+```
+
+# 0611 SpringBoot
+
+## service
+
+```
+데이터 처리 로직
+FE -> controller -> dto -> service
+Entity는 DB, Dto는 FE와 연결
+```
+
+# 0612 SpringBoot
+
+## 기능 구현
+
+```
+Entity -> Repository -> Dto -> Service -> Controller
+```
+
+# 0618
+
+## JWT
+
+```
+세션 기반
+토큰 기반
+
+gradle 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+
+application.properties 
+    jwt.secret 추가
+
+entity Member에 추가
+    @Enumerated(EnumType.STRING)
+    private Authority authority;
+
+    public Member(String name, String pwd, String email, String image, Authority authority) {
+        this.name = name;
+        this.pwd = pwd;
+        this.email = email;
+        this.image = image;
+        this.regData = LocalDateTime.now();
+        this.authority = authority;
+    }
+constant에 Authority 생성
+
+jwt > tokenprovider 생성
+
+dto > tokenDto 생성
 
 ```
