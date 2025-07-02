@@ -1,0 +1,10 @@
+from fastapi import FastAPI
+from routes.product import router as product_router
+
+app = FastAPI()
+app.include_router(product_router)
+
+@app.get("/")
+async def start():
+    # return {"result": 'Server is Running'}
+    return "FastAPI"
