@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List
-from database import db, products
+from database.mongo import db, products
 
 router = APIRouter(
     prefix="/product",
