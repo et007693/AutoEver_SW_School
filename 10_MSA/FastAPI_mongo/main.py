@@ -1,12 +1,12 @@
 from fastapi import FastAPI
-from routes.product import router
-from routes.boxoffice import router as boxoffice_router
+from routes import product, boxoffice, nsmc_ml
 from apscheduler.schedulers.background import BackgroundScheduler
 from scheduler.molvie import fetch_and_store
 
 app = FastAPI()
-app.include_router(router)
-# app.include_router(boxoffice_router)
+app.include_router(product.router)
+app.include_router(boxoffice.router)
+app.include_router(nsmc_ml.router)
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(fetch_and_store, 'cron', hour=12, minute=46)
