@@ -12,8 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -30,14 +34,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.autoever.clazzi.model.Vote
 import com.autoever.clazzi.model.VoteOption
+import com.autoever.clazzi.viewmodel.VoteListViewModel
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateVoteScreen(
-    onVoteCreate: (Vote) -> Unit
+    navController: NavController,
+    viewModel: VoteListViewModel,
+//    onVoteCreate: (Vote) -> Unit
 ) {
     val (title, setTitle) = remember { mutableStateOf("") }
     val options = remember { mutableStateListOf("", "") }
@@ -45,8 +53,18 @@ fun CreateVoteScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("투표 목록") }
+                title = { Text("투표 만들기") },
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.popBackStack()
+                        }
+                    ) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "뒤로가기")
+                    }
+                }
             )
+
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
@@ -109,7 +127,8 @@ fun CreateVoteScreen(
                             .filter { it.isNotBlank() }
                             .map { VoteOption(id = UUID.randomUUID().toString(), optionText = it) }
                     )
-                    onVoteCreate(newVote)
+                    viewModel.addVote(newVote)
+                    navController.popBackStack()
                 },
                 modifier = Modifier.fillMaxWidth()
                     ) {
