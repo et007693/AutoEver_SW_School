@@ -1,6 +1,5 @@
-package com.autoever.clazzi.ui.sreeens
+package com.autoever.clazzi.ui.screens
 
-import android.widget.Button
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -43,9 +42,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.autoever.clazzi.model.Vote
 import com.autoever.clazzi.viewmodel.VoteListViewModel
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
-import java.util.UUID
-import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -180,13 +178,19 @@ fun VoteScreen(
                 onClick = {
                     if (!hasVoted) {
                         coroutineScope.launch {
-                            val voteId = UUID.randomUUID().toString()
+                            val user = FirebaseAuth.getInstance().currentUser
+                            val uid = user?.uid ?: "0"
+
+                            val voteId = uid
                             val selectedOption = vote.voteOptions[selectOption]
 
-                            val updatedOption = selectedOption.copy(
-                                voters = selectedOption.voters + voteId
+                            // 새로운 투표자를 포함한 업데이트된 투표 옵션 생성
+                            val updatedOption = selectedOption.copy( // copy 메소드는 data class 복사
+                                voters = selectedOption.voters + voteId // 객체 복사할 때 voters 필드만 바꾸어서 복사
                             )
 
+
+                            // 업데이트된 투표 옵션 목록 생성 : voteOptions 여러개 중에 바뀐 항목만 바꾸어서 voteOptions 새로 생성
                             val updatedOptions = vote.voteOptions.mapIndexed{ index, voteOption ->
                                 if (index == selectOption) updatedOption else voteOption
                             }

@@ -1,4 +1,4 @@
-package com.autoever.clazzi.ui.sreeens
+package com.autoever.clazzi.ui.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,10 +11,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,10 +26,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.autoever.clazzi.R
 import com.autoever.clazzi.ui.theme.ClazziTheme
 import com.autoever.clazzi.viewmodel.VoteListViewModel
 import com.autoever.clazzi.util.formatDate
@@ -44,7 +48,17 @@ fun VoteListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("투표 목록") }
+                title = { Text(stringResource(R.string.vote_list_title)) },
+                actions = {
+                    IconButton(
+                        onClick = {}
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = "마이페이지"
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {

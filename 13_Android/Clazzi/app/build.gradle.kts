@@ -42,7 +42,11 @@ android {
 
 dependencies {
 //    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0")
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.androidx.material.icons.extended)
+    implementation(libs.firebase.auth)
+    implementation(libs.coil.compose)
+    implementation(libs.firebase.storage.ktx)
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.core.ktx)

@@ -1,17 +1,21 @@
 package com.autoever.clazzi.viewmodel
 
+import android.content.Context
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.autoever.clazzi.model.Vote
-import com.autoever.clazzi.model.VoteOption
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import java.util.UUID
 
 class VoteListViewModel:ViewModel() {
     val db = Firebase.firestore
@@ -22,6 +26,7 @@ class VoteListViewModel:ViewModel() {
     init {
         // 뷰모델 초기화 시 실시간 리스너 설정
         db.collection("votes")
+            .orderBy("createdAt", Query.Direction.DESCENDING)
             .addSnapshotListener() { snapshot, error ->
                 if (error != null) {
                     Log.e("Firestore", "Error getting votes", error)
@@ -64,14 +69,24 @@ class VoteListViewModel:ViewModel() {
     }
 
     // 새로운 투표를 추가하는 메서드
-    fun addVote(vote: Vote) {
-//        _voteList.value += vote
-        val db = Firebase.firestore
+    fun addVote(vote: Vote, context: Context, imageUri: Uri) {
         viewModelScope.launch {
             try {
+                val storageRef = FirebaseStorage.getInstance().reference
+                val imageRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+
+                // 이미지 업로드
+                val inputStream = context.contentResolver.openInputStream(imageUri)
+                val uploadType = inputStream?.let { imageRef.putStream(it).await() }
+
+                // 다운로드 URL 가져오기
+                val downloadUrl = uploadType?.storage?.downloadUrl?.await()
+
+                // Firestore에 업로드할 데이터 구성
                 val voteMap = hashMapOf(
                     "id" to vote.id,
                     "title" to vote.title,
+                    "imageUrl" to downloadUrl,
                     "createdAt" to FieldValue.serverTimestamp(),
                     "voteOptions" to vote.voteOptions.map {
                         hashMapOf(
@@ -82,10 +97,10 @@ class VoteListViewModel:ViewModel() {
                 )
                 db.collection("votes")
                     .document(vote.id)
-                    .set(vote)
+                    .set(voteMap)
                     .await()
             } catch (e: Exception) {
-                // 에러 처리
+                Log.e("Firestore", "Error adding vote", e)
             }
         }
     }
