@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.autoever.clazzi.R
+import com.autoever.clazzi.model.Vote
 import com.autoever.clazzi.ui.theme.ClazziTheme
 import com.autoever.clazzi.viewmodel.VoteListViewModel
 import com.autoever.clazzi.util.formatDate
@@ -51,7 +52,7 @@ fun VoteListScreen(
                 title = { Text(stringResource(R.string.vote_list_title)) },
                 actions = {
                     IconButton(
-                        onClick = {}
+                        onClick = {navController.navigate("myPage")}
                     ) {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -77,28 +78,35 @@ fun VoteListScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(voteList) { vote ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clickable {
-                            onVoteClicked(vote.id)
-                        }
-                ) {
-                    Column(
-                        modifier = Modifier.padding(16.dp)
-                    ) {
-                        Text(vote.title, style = MaterialTheme.typography.titleMedium)
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "생성일: ${formatDate(vote.createdAt)}"
-                        )
-                        Text(
-                            text = "항목 갯수: ${vote.optionCount}",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                    }
+                VoteItem(vote) {
+                    onVoteClicked(it)
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun VoteItem(vote: Vote, onVoteClicked: (String) -> Unit) {
+    Card(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable {
+                onVoteClicked(vote.id)
+            }
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp)
+        ) {
+            Text(vote.title, style = MaterialTheme.typography.titleMedium)
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text = "생성일: ${formatDate(vote.createdAt)}"
+            )
+            Text(
+                text = "항목 갯수: ${vote.optionCount}",
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }

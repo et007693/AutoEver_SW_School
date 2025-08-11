@@ -39,11 +39,14 @@ class VoteListViewModel:ViewModel() {
 
     // ID로 특정 투표를 가져오는 메서드
     fun getVoteById(voteId: String): Vote? {
-        return _voteList.value.find {it.id == voteId }
+        return _voteList.value.find {
+            it.id == voteId
+        }
     }
 
     // 새로운 투표를 추가하는 메서드
     fun addVote(vote: Vote, context: Context, imageUri: Uri) {
+        _voteList.value += vote
         viewModelScope.launch {
             try {
                 val storageRef = FirebaseStorage.getInstance().reference
@@ -54,7 +57,7 @@ class VoteListViewModel:ViewModel() {
                 val uploadType = inputStream?.let { imageRef.putStream(it).await() }
 
                 // 다운로드 URL 가져오기
-                val downloadUrl = uploadType?.storage?.downloadUrl?.await()
+                val downloadUrl = imageRef.downloadUrl.await().toString()
 
                 // Firestore에 업로드할 데이터 구성
                 val voteMap = hashMapOf(

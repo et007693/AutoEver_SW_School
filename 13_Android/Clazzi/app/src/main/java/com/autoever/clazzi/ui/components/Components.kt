@@ -46,7 +46,7 @@ private fun PermissionPickerLauncher(
     LaunchedEffect(Unit) {
         if (!launched) {
             launched = true
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
                 onLaunchPicker()
                 onResult(true)
             } else {
@@ -88,7 +88,7 @@ fun ImagePickerWithPermission(
     PermissionPickerLauncher(
         permission = imagePermission,
         rationale = "이미지를 사용하기 위해서는 갤러리 접근 권한이 필요합니다.",
-        onLaunchPicker = { galleryLauncher.launch("image/") }
+        onLaunchPicker = { galleryLauncher.launch("image/*") }
     )
 }
 

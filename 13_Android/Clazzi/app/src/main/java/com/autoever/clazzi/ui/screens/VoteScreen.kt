@@ -1,6 +1,5 @@
 package com.autoever.clazzi.ui.screens
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.autoever.clazzi.viewmodel.VoteListViewModel
 import com.autoever.clazzi.viewmodel.VoteViewModel
 import com.google.firebase.auth.FirebaseAuth
@@ -73,7 +73,7 @@ fun VoteScreen(
     // vote state
     val vote = voteViewModel.vote.collectAsState().value
 
-    // 현재 파이어베이스 사용자 아이디 가져오기
+    // 현재 firebase 사용자 아이디 가져오기
     val user = FirebaseAuth.getInstance().currentUser
     val currentUserId = user?.uid ?: "0"
 
@@ -88,7 +88,7 @@ fun VoteScreen(
     }
 
     // 전체 투표 수
-    val totalVotes = vote?.voteOptions.sumOf { it.voters.size } ?: 1
+    val totalVotes = vote?.voteOptions?.sumOf { it.voters.size } ?: 1
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -153,7 +153,8 @@ fun VoteScreen(
                 Spacer(Modifier.height(16.dp))
 
                 Image(
-                    painter = painterResource(id = android.R.drawable.ic_menu_gallery),
+                    painter = if (vote.imageUrl != null) rememberAsyncImagePainter(vote.imageUrl)
+                    else painterResource(id = android.R.drawable.ic_menu_gallery),
                     contentDescription = "투표 사진",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
@@ -235,25 +236,21 @@ fun VoteScreen(
                         }
                 }
 
-
-
                 Spacer(Modifier.height(40.dp))
 
                 Button(
                     onClick = {
                         if (!hasVoted) {
                             coroutineScope.launch {
+                                val selectedOption = vote.voteOptions[selectOption]
                                 val user = FirebaseAuth.getInstance().currentUser
                                 val uid = user?.uid ?: "0"
-
                                 val voteId = uid
-                                val selectedOption = vote.voteOptions[selectOption]
 
                                 // 새로운 투표자를 포함한 업데이트 된 투표 옵션 생성
                                 val updatedOption = selectedOption.copy( // copy 메소드는 data class 복사
                                     voters = selectedOption.voters + voteId // 객체 복사할 때 voters 필드만 바꾸어서 복사
                                 )
-
 
                                 // 업데이트된 투표 옵션 목록 생성 : voteOptions 여러개 중에 바뀐 항목만 바꾸어서 voteOptions 새로 생성
                                 val updatedOptions = vote.voteOptions.mapIndexed{ index, voteOption ->

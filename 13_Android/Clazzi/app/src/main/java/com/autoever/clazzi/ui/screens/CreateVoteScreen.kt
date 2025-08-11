@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.autoever.clazzi.model.Vote
 import com.autoever.clazzi.model.VoteOption
+import com.autoever.clazzi.ui.components.CameraPickerWithPermission
 import com.autoever.clazzi.ui.components.ImagePickerWithPermission
 import com.autoever.clazzi.viewmodel.VoteListViewModel
 import java.util.UUID
@@ -62,7 +63,6 @@ fun CreateVoteScreen(
     var showImagePicker by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showCameraPicker by remember { mutableStateOf(false) }
-
 
     Scaffold(
         topBar = {
@@ -136,6 +136,15 @@ fun CreateVoteScreen(
                         }
                     )
                 }
+            }
+            // 권한 팝업 및 카메라로 이동
+            if (showCameraPicker) {
+                CameraPickerWithPermission(
+                    onImageCaptured = { uri ->
+                        imageUri = uri
+                        showCameraPicker = false
+                    }
+                )
             }
 
             // 권한 팝업 및 이미지 선택 화면으로 이동

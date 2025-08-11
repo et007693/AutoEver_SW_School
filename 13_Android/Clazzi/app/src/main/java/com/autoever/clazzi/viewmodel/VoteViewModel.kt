@@ -1,12 +1,13 @@
 package com.autoever.clazzi.viewmodel
 
+import androidx.lifecycle.ViewModel
 import com.autoever.clazzi.model.Vote
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 
-class VoteViewModel {
+class VoteViewModel : ViewModel() {
     private val _vote = MutableStateFlow<Vote?>(null)
     val vote: StateFlow<Vote?> = _vote
 
@@ -17,10 +18,7 @@ class VoteViewModel {
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
-                    val vote = snapshot.toObject(Vote::class.java)
-                    _vote.value = vote
-                } else {
-                    _vote.value = null
+                    _vote.value = snapshot.toObject(Vote::class.java)
                 }
             }
     }
