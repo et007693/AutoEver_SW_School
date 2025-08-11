@@ -116,6 +116,12 @@ fun VoteItem(
                 onVoteClicked(vote.id)
             }
     ) {
+        LaunchedEffect(vote) {
+            hasVoted = vote.voteOptions.any { option ->
+                option.voters.contains(currentUserId)
+            }
+        }
+
         Row(
             modifier = Modifier.padding(16.dp)
         ) {

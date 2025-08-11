@@ -1,6 +1,11 @@
 package com.autoever.clazzi.ui.screens
 
+import android.app.DatePickerDialog
+import android.app.ProgressDialog.show
+import android.app.TimePickerDialog
 import android.net.Uri
+import android.widget.DatePicker
+import android.widget.TimePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,6 +31,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -47,6 +54,10 @@ import com.autoever.clazzi.model.VoteOption
 import com.autoever.clazzi.ui.components.CameraPickerWithPermission
 import com.autoever.clazzi.ui.components.ImagePickerWithPermission
 import com.autoever.clazzi.viewmodel.VoteListViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,6 +74,8 @@ fun CreateVoteScreen(
     var showImagePicker by remember { mutableStateOf(false) }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var showCameraPicker by remember { mutableStateOf(false) }
+
+    var deadlineDate by remember { mutableStateOf<Date?>(null) }
 
     Scaffold(
         topBar = {
@@ -180,6 +193,17 @@ fun CreateVoteScreen(
                 Text("항목 추가")
             }
 
+            Spacer(Modifier.height(40.dp))
+
+            DeadLineDateTimePicker(
+                deadline = deadlineDate,
+                onDeadLineChange = { newDate ->
+                    deadlineDate = newDate
+                }
+            )
+
+            Spacer(Modifier.height(40.dp))
+
             Button(
                 onClick = {
                     val newVote = Vote(
@@ -187,7 +211,8 @@ fun CreateVoteScreen(
                         title = title,
                         voteOptions = options
                             .filter { it.isNotBlank() }
-                            .map { VoteOption(id = UUID.randomUUID().toString(), optionText = it) }
+                            .map { VoteOption(id = UUID.randomUUID().toString(), optionText = it) },
+                        deadline = deadlineDate
                     )
                     viewModel.addVote(newVote, navController.context, imageUri!!)
                     navController.popBackStack()
@@ -198,4 +223,62 @@ fun CreateVoteScreen(
             }
         }
     }
+}
+
+@Composable
+fun DeadLineDateTimePicker(
+    deadline: Date?,
+    onDeadLineChange: (Date) -> Unit
+) {
+    val context = LocalContext.current
+    val calendar = Calendar.getInstance()
+
+    // 초기값이 있으면 calendar에 셋팅
+    deadline?.let { calendar.time = it }
+
+    val displayText = deadline?.let {
+         SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(it)
+    } ?:""
+
+    val datePickerDialog = remember {
+        DatePickerDialog(
+            context,
+            { _: DatePicker, year:Int, month:Int, dayOfMonth:Int ->
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, month)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+
+                TimePickerDialog(
+                    context,
+                    { _: TimePicker, hourOfDay: Int, minute: Int ->
+                        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
+                        calendar.set(Calendar.MINUTE, minute)
+                        calendar.set(Calendar.SECOND, 0)
+                        calendar.set(Calendar.MILLISECOND, 0)
+
+                        onDeadLineChange(calendar.time)
+                    },
+                    calendar.get(Calendar.HOUR_OF_DAY),
+                    calendar.get(Calendar.MINUTE),
+                    true
+                ).show()
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    OutlinedTextField(
+        value = "",
+        onValueChange = {},
+        label = { Text("투표 마감일") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable {
+                datePickerDialog.show()
+            },
+        enabled = false,
+        readOnly = true,
+    )
 }
