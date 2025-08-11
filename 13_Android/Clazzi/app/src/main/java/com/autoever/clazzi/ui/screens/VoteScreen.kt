@@ -1,24 +1,30 @@
 package com.autoever.clazzi.ui.screens
 
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -67,8 +73,22 @@ fun VoteScreen(
     // vote state
     val vote = voteViewModel.vote.collectAsState().value
 
+    // 현재 파이어베이스 사용자 아이디 가져오기
+    val user = FirebaseAuth.getInstance().currentUser
+    val currentUserId = user?.uid ?: "0"
+
     var selectOption by remember { mutableStateOf(0) }
     var hasVoted by remember { mutableStateOf(false) }
+    LaunchedEffect(vote) {
+        if (vote != null) {
+            hasVoted = vote.voteOptions.any { option ->
+                option.voters.contains(currentUserId)
+            }
+        }
+    }
+
+    // 전체 투표 수
+    val totalVotes = vote?.voteOptions.sumOf { it.voters.size } ?: 1
     val coroutineScope = rememberCoroutineScope()
 
     Scaffold(
@@ -102,6 +122,7 @@ fun VoteScreen(
             Column(
                 modifier = Modifier
                     .padding(innerPadding)
+                    .padding(16.dp)
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -143,20 +164,78 @@ fun VoteScreen(
 
                 Spacer(Modifier.height(16.dp))
 
-                vote.voteOptions.forEachIndexed() { index, voteOption ->
-                    Button(
-                        onClick = {
-                            selectOption = index
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            if (selectOption == index) Color(0xFF13F8A5)
-                            else Color.LightGray.copy(alpha = 0.5f)
-                        ),
-                        modifier = Modifier.width(200.dp)
-                    ) {
-                        Text(voteOption.optionText)
+                if (!hasVoted) {
+                    vote.voteOptions.forEachIndexed() { index, voteOption ->
+                        Button(
+                            onClick = {
+                                selectOption = index
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                if (selectOption == index) Color(0xFF13F8A5)
+                                else Color.LightGray.copy(alpha = 0.5f)
+                            ),
+                            modifier = Modifier.width(200.dp)
+                        ) {
+                            Text(voteOption.optionText)
+                        }
                     }
+                } else {
+                    vote.voteOptions
+                        .sortedByDescending { it.voters.size }
+                        .forEach{ option ->
+                            val isMyVote = option.voters.contains(currentUserId)
+                            val percent = option.voters.size.toFloat() / totalVotes
+
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                                    .background(
+                                        if (isMyVote) Color(0xFF13F8A5).copy(alpha = 0.4f)
+                                        else Color.LightGray.copy(alpha = 0.3f),
+                                        shape = RoundedCornerShape(12.dp)
+                                    )
+                                    .padding(12.dp)
+                            ) {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = option.optionText,
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                        modifier = Modifier.weight(1f)
+                                    )
+                                    Text(
+                                        text = "${option.voters.size}",
+                                        color = Color.White,
+                                        fontWeight = FontWeight.Bold,
+                                    )
+                                    if (isMyVote) {
+                                        Icon(
+                                            imageVector = Icons.Default.Check,
+                                            contentDescription = "내가 투표한 항목",
+                                            tint = Color(0xFF13F8A5),
+                                            modifier = Modifier.padding(start = 8.dp)
+                                        )
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                LinearProgressIndicator(
+                                    progress = { percent },
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(8.dp)
+                                        .clip(RoundedCornerShape(4.dp)),
+                                    color = Color(0xFF13F8A5),
+                                    trackColor = Color.White.copy(0.4f)
+                                )
+                            }
+                        }
                 }
+
+
 
                 Spacer(Modifier.height(40.dp))
 
@@ -186,7 +265,6 @@ fun VoteScreen(
                                 )
 
                                 voteListViewModel.setVote(updatedVote)
-                                hasVoted = true
                             }
                         }
                     },

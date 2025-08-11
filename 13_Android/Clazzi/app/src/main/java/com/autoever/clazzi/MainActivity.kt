@@ -1,11 +1,9 @@
 package com.autoever.clazzi
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,7 +37,6 @@ class MainActivity : ComponentActivity() {
                     composable("auth") {
                         AuthScreen(navController = navController)
                     }
-
                     composable("voteList") {
                         VoteListScreen(
                             navController = navController,
@@ -51,7 +48,6 @@ class MainActivity : ComponentActivity() {
                     }
                     composable("vote/{voteId}") { backStackEntry ->
                         val voteId = backStackEntry.arguments?.getString("voteId") ?: "1"
-                        val vote = voteListViewModel.getVoteById(voteId)
                         VoteScreen(
                             voteId = voteId,
                             navController = navController,
@@ -68,7 +64,6 @@ class MainActivity : ComponentActivity() {
                             Toast.makeText(context, "해당 투표가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                         }*/
                     }
-
                     composable("createVote") {
                         CreateVoteScreen(
                             navController = navController,
