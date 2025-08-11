@@ -266,10 +266,10 @@ fun VoteScreen(
                         }
                     },
 
-                    enabled = !hasVoted && selectOption >= 0,
+                    enabled = !hasVoted,
                     modifier = Modifier.width(200.dp)
                 ) {
-                    Text("투표하기")
+                    Text(if (hasVoted) "투표 완료" else "투표하기")
                 }
             }
         }

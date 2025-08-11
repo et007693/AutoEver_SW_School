@@ -3,6 +3,7 @@ package com.autoever.clazzi.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -22,8 +23,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -36,6 +41,7 @@ import com.autoever.clazzi.model.Vote
 import com.autoever.clazzi.ui.theme.ClazziTheme
 import com.autoever.clazzi.viewmodel.VoteListViewModel
 import com.autoever.clazzi.util.formatDate
+import com.google.firebase.auth.FirebaseAuth
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -87,7 +93,22 @@ fun VoteListScreen(
 }
 
 @Composable
-fun VoteItem(vote: Vote, onVoteClicked: (String) -> Unit) {
+fun VoteItem(
+    vote: Vote, onVoteClicked: (String) -> Unit
+) {
+    val user = FirebaseAuth.getInstance().currentUser
+    val currentUserId = user?.uid ?: "0"
+
+    // hasVoted 상태 : 사용자가 투표했는지 확인
+    var hasVoted by remember { mutableStateOf(false) }
+
+    // vote 데이터가 로드된 후 haxVoted 초기화
+    LaunchedEffect(vote) {
+        hasVoted = vote.voteOptions.any { option ->
+            option.voters.contains(currentUserId)
+        }
+    }
+
     Card(
         modifier = Modifier
             .fillMaxSize()
@@ -95,18 +116,24 @@ fun VoteItem(vote: Vote, onVoteClicked: (String) -> Unit) {
                 onVoteClicked(vote.id)
             }
     ) {
-        Column(
+        Row(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(vote.title, style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = "생성일: ${formatDate(vote.createdAt)}"
-            )
-            Text(
-                text = "항목 갯수: ${vote.optionCount}",
-                style = MaterialTheme.typography.bodySmall
-            )
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(vote.title, style = MaterialTheme.typography.titleMedium)
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = "생성일: ${formatDate(vote.createdAt)}"
+                )
+                Text(
+                    text = "항목 갯수: ${vote.optionCount}",
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            // 투표 여부
+            Text(if (hasVoted) "투표 완료" else "투표 미완료")
         }
     }
 }
