@@ -52,16 +52,21 @@ class MainActivity : ComponentActivity() {
                     composable("vote/{voteId}") { backStackEntry ->
                         val voteId = backStackEntry.arguments?.getString("voteId") ?: "1"
                         val vote = voteListViewModel.getVoteById(voteId)
-                        if (vote != null) {
+                        VoteScreen(
+                            voteId = voteId,
+                            navController = navController,
+                            voteListViewModel = voteListViewModel
+                        )
+                        /*if (vote != null) {
                             VoteScreen(
                                 vote = vote,
                                 navController = navController,
-                                viewModel = voteListViewModel
+                                voteListViewModel = voteListViewModel
                             )
                         } else {
                             val context = LocalContext.current
                             Toast.makeText(context, "해당 투표가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
-                        }
+                        }*/
                     }
 
                     composable("createVote") {
