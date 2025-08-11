@@ -8,6 +8,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.autoever.clazzi.ui.screens.AuthScreen
 import com.autoever.clazzi.ui.screens.CreateVoteScreen
 import com.autoever.clazzi.ui.screens.VoteListScreen
@@ -46,7 +47,13 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
-                    composable("vote/{voteId}") { backStackEntry ->
+                    composable(
+                        "vote/{voteId}",
+                        deepLinks = listOf(
+                            navDeepLink { uriPattern = "clazzi://vote/{voteId}" },
+                            navDeepLink { uriPattern = "https://clazzi.web.app/vote/{voteId}" }
+                        )
+                    ) { backStackEntry ->
                         val voteId = backStackEntry.arguments?.getString("voteId") ?: "1"
                         VoteScreen(
                             voteId = voteId,

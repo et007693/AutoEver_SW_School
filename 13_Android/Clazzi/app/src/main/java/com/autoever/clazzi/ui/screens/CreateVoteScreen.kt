@@ -1,11 +1,11 @@
 package com.autoever.clazzi.ui.screens
 
 import android.app.DatePickerDialog
-import android.app.ProgressDialog.show
 import android.app.TimePickerDialog
 import android.net.Uri
 import android.widget.DatePicker
 import android.widget.TimePicker
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,7 +31,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -195,9 +194,9 @@ fun CreateVoteScreen(
 
             Spacer(Modifier.height(40.dp))
 
-            DeadLineDateTimePicker(
+            DeadlineDateTimePicker(
                 deadline = deadlineDate,
-                onDeadLineChange = { newDate ->
+                onDeadlineChange = { newDate ->
                     deadlineDate = newDate
                 }
             )
@@ -206,6 +205,10 @@ fun CreateVoteScreen(
 
             Button(
                 onClick = {
+                    if (imageUri == null) {
+                        Toast.makeText(navController.context, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+                        return@Button
+                    }
                     val newVote = Vote(
                         id = UUID.randomUUID().toString(),
                         title = title,
@@ -226,24 +229,25 @@ fun CreateVoteScreen(
 }
 
 @Composable
-fun DeadLineDateTimePicker(
+fun DeadlineDateTimePicker(
     deadline: Date?,
-    onDeadLineChange: (Date) -> Unit
+    onDeadlineChange: (Date) -> Unit
 ) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
 
-    // 초기값이 있으면 calendar에 셋팅
+    // 초기 값이 있으면 calendar에 세팅
     deadline?.let { calendar.time = it }
 
+    // 화면에 보여줄 문자열 (포맷팅)
     val displayText = deadline?.let {
-         SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(it)
-    } ?:""
+        SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault()).format(it)
+    } ?: ""
 
     val datePickerDialog = remember {
         DatePickerDialog(
             context,
-            { _: DatePicker, year:Int, month:Int, dayOfMonth:Int ->
+            { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
                 calendar.set(Calendar.YEAR, year)
                 calendar.set(Calendar.MONTH, month)
                 calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
@@ -256,7 +260,7 @@ fun DeadLineDateTimePicker(
                         calendar.set(Calendar.SECOND, 0)
                         calendar.set(Calendar.MILLISECOND, 0)
 
-                        onDeadLineChange(calendar.time)
+                        onDeadlineChange(calendar.time)
                     },
                     calendar.get(Calendar.HOUR_OF_DAY),
                     calendar.get(Calendar.MINUTE),
@@ -265,20 +269,20 @@ fun DeadLineDateTimePicker(
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
+            calendar.get(Calendar.DAY_OF_MONTH),
         )
     }
 
     OutlinedTextField(
-        value = "",
-        onValueChange = {},
-        label = { Text("투표 마감일") },
+        value = displayText,
+        onValueChange = { },
+        label = { Text(text = "투표 마감일") },
         modifier = Modifier
             .fillMaxWidth()
             .clickable {
                 datePickerDialog.show()
             },
         enabled = false,
-        readOnly = true,
+        readOnly = true
     )
 }

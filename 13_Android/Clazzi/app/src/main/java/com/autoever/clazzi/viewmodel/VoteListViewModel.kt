@@ -17,18 +17,17 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.UUID
 
-class VoteListViewModel:ViewModel() {
+class VoteListViewModel : ViewModel() {
     val db = Firebase.firestore
-    private val _voteList = MutableStateFlow<List<Vote>>(emptyList())
+    private val _voteList = MutableStateFlow<List<Vote>>((emptyList()))
     val voteList: StateFlow<List<Vote>> = _voteList
 
     init {
-        // 뷰모델 초기화 시 실시간 리스너 설정
         db.collection("votes")
-            .orderBy("createdAt", Query.Direction.DESCENDING)
-            .addSnapshotListener() { snapshot, error ->
+            .orderBy("createAt", Query.Direction.DESCENDING)
+            .addSnapshotListener { snapshot, error ->
                 if (error != null) {
-                    Log.e("Firestore", "Error getting votes", error)
+                    Log.e("Firebase", "Error getting documents: ", error)
                     return@addSnapshotListener
                 }
                 if (snapshot != null) {
@@ -37,14 +36,37 @@ class VoteListViewModel:ViewModel() {
             }
     }
 
-    // ID로 특정 투표를 가져오는 메서드
+    /*init {
+        _voteList.value = listOf(
+            Vote(
+                id = "1", title = "오늘 점심 뭐 먹을까요?", voteOptions = listOf(
+                    VoteOption(id = "1", optionText = "삼겹살"),
+                    VoteOption(id = "2", optionText = "치킨"),
+                    VoteOption(id = "3", optionText = "피자"),
+                )
+            ),
+            Vote(
+                id = "2", title = "우리 반에서 제일 잘 생긴 사람은?", voteOptions = listOf(
+                    VoteOption(id = "1", optionText = "김한수"),
+                    VoteOption(id = "2", optionText = "박명수"),
+                    VoteOption(id = "3", optionText = "유재석"),
+                )
+            ),
+            Vote(
+                id = "3", title = "서핑 같이 가고 싶은 사람은?", voteOptions = listOf(
+                    VoteOption(id = "1", optionText = "정준하"),
+                    VoteOption(id = "2", optionText = "하하"),
+                )
+            )
+        )
+    }*/
+
     fun getVoteById(voteId: String): Vote? {
-        return _voteList.value.find {
-            it.id == voteId
+        return _voteList.value.find { vote ->
+            vote.id == voteId
         }
     }
 
-    // 새로운 투표를 추가하는 메서드
     fun addVote(vote: Vote, context: Context, imageUri: Uri) {
         _voteList.value += vote
         viewModelScope.launch {
@@ -52,26 +74,27 @@ class VoteListViewModel:ViewModel() {
                 val storageRef = FirebaseStorage.getInstance().reference
                 val imageRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
 
-                // 이미지 업로드
                 val inputStream = context.contentResolver.openInputStream(imageUri)
-                val uploadType = inputStream?.let { imageRef.putStream(it).await() }
+                val uploadTask = inputStream?.let {
+                    imageRef.putStream(it).await()
+                }
 
-                // 다운로드 URL 가져오기
                 val downloadUrl = imageRef.downloadUrl.await().toString()
 
-                // Firestore에 업로드할 데이터 구성
                 val voteMap = hashMapOf(
                     "id" to vote.id,
                     "title" to vote.title,
                     "imageUrl" to downloadUrl,
-                    "createdAt" to FieldValue.serverTimestamp(),
+                    "createAt" to FieldValue.serverTimestamp(),
                     "voteOptions" to vote.voteOptions.map {
                         hashMapOf(
                             "id" to it.id,
-                            "optionText" to it.optionText,
+                            "optionText" to it.optionText
                         )
-                    }
+                    },
+                    "deadline" to vote.deadline
                 )
+
                 db.collection("votes")
                     .document(vote.id)
                     .set(voteMap)
@@ -82,7 +105,7 @@ class VoteListViewModel:ViewModel() {
         }
     }
 
-    fun setVote(vote:Vote) {
+    fun setVote(vote: Vote) {
         viewModelScope.launch {
             try {
                 db.collection("votes")
@@ -91,7 +114,7 @@ class VoteListViewModel:ViewModel() {
                     .await()
                 Log.d("Firestore", "투표가 성공적으로 되었습니다.")
             } catch (e: Exception) {
-                Log.e("Firestore", "투표 업데이트 중 오류가 발생했습니다.", e)
+                Log.e("Firestore", "투표 업데이트 중 오류가 발생했습니다.",e)
             }
         }
     }

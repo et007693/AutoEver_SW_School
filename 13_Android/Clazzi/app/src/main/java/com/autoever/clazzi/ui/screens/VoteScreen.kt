@@ -1,5 +1,6 @@
 package com.autoever.clazzi.ui.screens
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -109,6 +111,23 @@ fun VoteScreen(
                         }
                     ) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "뒤로가기")
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            if (vote != null) {
+                                val voteUrl = "https://clazzi-b33a7.web.app/vote/${vote.id}"
+                                val sendIntent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, voteUrl)
+                                    type = "text/plain"
+                                }
+                                navController.context.startActivity(Intent.createChooser(sendIntent, "투표 공유"))
+                            }
+                        }
+                    ) {
+                        Icon(Icons.Default.Share, contentDescription = "투표 공유")
                     }
                 }
             )
@@ -264,13 +283,10 @@ fun VoteScreen(
                         if (!hasVoted) {
                             coroutineScope.launch {
                                 val selectedOption = vote.voteOptions[selectOption]
-                                val user = FirebaseAuth.getInstance().currentUser
-                                val uid = user?.uid ?: "0"
-                                val voteId = uid
 
                                 // 새로운 투표자를 포함한 업데이트 된 투표 옵션 생성
                                 val updatedOption = selectedOption.copy( // copy 메소드는 data class 복사
-                                    voters = selectedOption.voters + voteId // 객체 복사할 때 voters 필드만 바꾸어서 복사
+                                    voters = selectedOption.voters + currentUserId // 객체 복사할 때 voters 필드만 바꾸어서 복사
                                 )
 
                                 // 업데이트된 투표 옵션 목록 생성 : voteOptions 여러개 중에 바뀐 항목만 바꾸어서 voteOptions 새로 생성

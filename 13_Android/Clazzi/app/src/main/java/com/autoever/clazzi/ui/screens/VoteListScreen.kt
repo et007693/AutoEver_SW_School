@@ -80,7 +80,8 @@ fun VoteListScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding),
+                .padding(innerPadding)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             items(voteList) { vote ->
@@ -131,7 +132,7 @@ fun VoteItem(
                 Text(vote.title, style = MaterialTheme.typography.titleMedium)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = "생성일: ${formatDate(vote.createdAt)}"
+                    text = "생성일: ${formatDate(vote.createAt)}"
                 )
                 Text(
                     text = "항목 갯수: ${vote.optionCount}",
