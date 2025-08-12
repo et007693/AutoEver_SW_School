@@ -65,13 +65,12 @@ import java.util.Date
 fun VoteScreen(
     voteId: String,
     navController: NavController,
-    voteListViewModel: VoteListViewModel
+    voteViewModel: VoteViewModel,
+    voteListViewModel: VoteListViewModel,
 ) {
-    val voteViewModel: VoteViewModel = viewModel()
-
     // 초기 데이터 로드
     LaunchedEffect(voteId) {
-        voteViewModel.loadVote(voteId, voteListViewModel)
+        voteViewModel.loadVote(voteId)
     }
 
     // vote state
@@ -117,7 +116,7 @@ fun VoteScreen(
                     IconButton(
                         onClick = {
                             if (vote != null) {
-                                val voteUrl = "https://clazzi-b33a7.web.app/vote/${vote.id}"
+                                val voteUrl = "https://clazzi-54344.web.app/vote/${vote.id}"
                                 val sendIntent = Intent().apply {
                                     action = Intent.ACTION_SEND
                                     putExtra(Intent.EXTRA_TEXT, voteUrl)

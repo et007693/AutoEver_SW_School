@@ -47,6 +47,9 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.coil.compose)
     implementation(libs.firebase.storage.ktx)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0") // Retrofit
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0") // Gson 변환기
+
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.core.ktx)

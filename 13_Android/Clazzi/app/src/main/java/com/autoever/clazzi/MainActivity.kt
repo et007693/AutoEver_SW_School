@@ -9,6 +9,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import com.autoever.clazzi.repository.FirebaseVoteRepository
+import com.autoever.clazzi.repository.RestApiVoteRepository
+import com.autoever.clazzi.repository.network.ApiClient
 import com.autoever.clazzi.ui.screens.AuthScreen
 import com.autoever.clazzi.ui.screens.CreateVoteScreen
 import com.autoever.clazzi.ui.screens.VoteListScreen
@@ -16,6 +19,9 @@ import com.autoever.clazzi.ui.screens.VoteScreen
 import com.autoever.clazzi.ui.theme.ClazziTheme
 import com.autoever.clazzi.ui.screens.MyPageScreen
 import com.autoever.clazzi.viewmodel.VoteListViewModel
+import com.autoever.clazzi.viewmodel.VoteListViewModelFactory
+import com.autoever.clazzi.viewmodel.VoteViewModel
+import com.autoever.clazzi.viewmodel.VoteViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : ComponentActivity() {
@@ -25,7 +31,15 @@ class MainActivity : ComponentActivity() {
         setContent {
             ClazziTheme {
                 val navController = rememberNavController()
-                val voteListViewModel = viewModel<VoteListViewModel>()
+//                val repo = FirebaseVoteRepository() // 파이어베이스 연동
+                val repo = RestApiVoteRepository(ApiClient.voteApiService) // restAPI 연동
+                val voteListViewModel: VoteListViewModel = viewModel(
+                    factory = VoteListViewModelFactory(repo)
+                )
+                val voteViewModel: VoteViewModel = viewModel(
+                    factory = VoteViewModelFactory(repo)
+                )
+
                 val isLoggedIn = FirebaseAuth.getInstance().currentUser != null
 
                 NavHost(
@@ -58,6 +72,7 @@ class MainActivity : ComponentActivity() {
                         VoteScreen(
                             voteId = voteId,
                             navController = navController,
+                            voteViewModel = voteViewModel,
                             voteListViewModel = voteListViewModel
                         )
                         /*if (vote != null) {
