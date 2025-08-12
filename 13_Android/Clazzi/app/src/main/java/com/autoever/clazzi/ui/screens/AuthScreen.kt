@@ -97,7 +97,7 @@ fun AuthScreen(
                         auth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    navController.navigate("voteList")
+                                    navController.navigate("main")
                                 } else {
                                     Log.w("AuthScreen", "로그인 실패", task.exception)
                                 }
@@ -106,7 +106,7 @@ fun AuthScreen(
                         auth.createUserWithEmailAndPassword(email, password)
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
-                                    navController.navigate("voteList")
+                                    navController.navigate("main")
                                 } else {
                                     Log.w("AuthScreen", "회원가입 실패", task.exception)
                                 }

@@ -4,15 +4,32 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.autoever.clazzi.repository.FirebaseVoteRepository
 import com.autoever.clazzi.repository.RestApiVoteRepository
 import com.autoever.clazzi.repository.network.ApiClient
 import com.autoever.clazzi.ui.screens.AuthScreen
+import com.autoever.clazzi.ui.screens.ChatScreen
 import com.autoever.clazzi.ui.screens.CreateVoteScreen
 import com.autoever.clazzi.ui.screens.VoteListScreen
 import com.autoever.clazzi.ui.screens.VoteScreen
@@ -31,36 +48,28 @@ class MainActivity : ComponentActivity() {
         setContent {
             ClazziTheme {
                 val navController = rememberNavController()
-//                val repo = FirebaseVoteRepository() // 파이어베이스 연동
-                val repo = RestApiVoteRepository(ApiClient.voteApiService) // restAPI 연동
-                val voteListViewModel: VoteListViewModel = viewModel(
-                    factory = VoteListViewModelFactory(repo)
-                )
+                val isLoggedIn = FirebaseAuth.getInstance().currentUser != null
+                val repo = FirebaseVoteRepository() // 파이어베이스 연동
+//                val repo = RestApiVoteRepository(ApiClient.voteApiService) // restAPI 연동
                 val voteViewModel: VoteViewModel = viewModel(
                     factory = VoteViewModelFactory(repo)
                 )
-
-                val isLoggedIn = FirebaseAuth.getInstance().currentUser != null
+                val voteListViewModel: VoteListViewModel = viewModel(
+                    factory = VoteListViewModelFactory(repo)
+                )
 
                 NavHost(
                     navController = navController,
-                    startDestination = if (isLoggedIn) "voteList" else "auth"
+                    startDestination = if (isLoggedIn) "main" else "auth"
                 ) {
-                    composable("MyPage") {
-                        MyPageScreen(navController = navController)
-                    }
                     composable("auth") {
                         AuthScreen(navController = navController)
                     }
-                    composable("voteList") {
-                        VoteListScreen(
-                            navController = navController,
-                            viewModel = voteListViewModel,
-                            onVoteClicked = { voteId ->
-                                navController.navigate("vote/$voteId")
-                            }
-                        )
+
+                    composable("main") {
+                        MainScreen(voteListViewModel, navController)
                     }
+
                     composable(
                         "vote/{voteId}",
                         deepLinks = listOf(
@@ -98,3 +107,80 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
+    object VoteList: BottomNavItem("voteList", Icons.AutoMirrored.Filled.List, "투표")
+    object Chat: BottomNavItem("chat", Icons.AutoMirrored.Filled.List, "채팅")
+    object MyPage: BottomNavItem("myPage", Icons.AutoMirrored.Filled.List, "마이페이지")
+}
+
+@Composable
+fun MainScreen(
+    voteListViewModel: VoteListViewModel, rootNavController: NavController
+) {
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = {
+            BottomNavigationBar(navController)
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = "voteList",
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(BottomNavItem.VoteList.route) {
+                VoteListScreen(
+                    navController = navController,
+                    viewModel = voteListViewModel,
+                    onVoteClicked = { voteId ->
+                        navController.navigate("vote/$voteId")
+                    }
+                )
+            }
+            composable(BottomNavItem.Chat.route){
+                ChatScreen()
+            }
+
+            composable(BottomNavItem.MyPage.route) {
+                MyPageScreen(navController = navController)
+            }
+        }
+    }
+}
+
+@Composable
+fun BottomNavigationBar(navController: NavHostController) {
+    val items = listOf(
+        BottomNavItem.VoteList,
+        BottomNavItem.Chat,
+        BottomNavItem.MyPage
+    )
+
+    NavigationBar(
+        containerColor = MaterialTheme.colorScheme.background,
+        contentColor = MaterialTheme.colorScheme.onBackground
+    ) {
+        val currentRoute = navController.currentBackStackEntry?.destination?.route
+
+        items.forEach { item ->
+            NavigationBarItem(
+                icon = { Icon(item.icon, contentDescription = item.label) },
+                label = { Text(item.label) },
+                selected = currentRoute == item.route,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    indicatorColor = MaterialTheme.colorScheme.primary
+                )
+            )
+        }
+    }
+}
