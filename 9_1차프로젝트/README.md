@@ -344,6 +344,13 @@ config.setAllowCredentials(true); // 쿠키, Authorization 헤더 포함 허용
 
 # 예외처리
 
+스프링부트의 예외 처리 방식은 크게 2가지
+
+- @ControllerAdvice를 통한 모든 Controller에서 발생할 수 있는 예외 처리
+- @ExceptionHandler를 통한 특정 Controller의 예외 처리
+  -> ControllerAdvice로 모든 컨트롤러에서 발생할 예외를 정의하고, ExceptionHandler를 통해 발생하는 예외마다 처리할 메소드를 정의
+  ![alt text](image.png)
+
 ```
     throw new {exception_type}("{message}")
     try{
@@ -416,3 +423,8 @@ constraints는 어떻게 작성하나?
 | A. 실시간 `countByCommentIdAndReactionType` 쿼리 (repo 사용) | 반응할 때마다 실시간 집계  | 정확성, 별도 컬럼 유지 불필요 | DB 부하 증가, 성능 저하 가능 |
 | B. `like_count`, `hate_count` 컬럼을 관리하며 +1/-1로 갱신   | DB에 count를 저장하고 갱신 | 빠름, 조회 시 효율적          | 동시성 이슈, 갱신 누락 위험  |
 | C. Redis로 count 캐싱 후 주기적 sync                         | 중간 계층 캐시 처리        | 속도 + 일관성                 | 시스템 복잡도 증가           |
+
+### 0703
+
+다른 브랜치의 특정 커밋만 가져오고 싶을때
+-> git cherry-pick {커밋해쉬}
