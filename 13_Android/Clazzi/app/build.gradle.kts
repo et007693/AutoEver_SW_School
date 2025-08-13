@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.firebase.storage.ktx)
     implementation("com.squareup.retrofit2:retrofit:2.11.0") // Retrofit
     implementation("com.squareup.retrofit2:converter-gson:2.11.0") // Gson 변환기
+    implementation("androidx.compose.material:material-icons-core:1.6.8")
 
 
     implementation(libs.androidx.lifecycle.viewmodel.compose)

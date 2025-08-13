@@ -7,6 +7,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.ChatBubble
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -15,6 +17,7 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -22,13 +25,12 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.autoever.clazzi.repository.FirebaseVoteRepository
 import com.autoever.clazzi.repository.RestApiVoteRepository
-import com.autoever.clazzi.repository.network.ApiClient
 import com.autoever.clazzi.ui.screens.AuthScreen
+import com.autoever.clazzi.ui.screens.ChatRoomScreen
 import com.autoever.clazzi.ui.screens.ChatScreen
 import com.autoever.clazzi.ui.screens.CreateVoteScreen
 import com.autoever.clazzi.ui.screens.VoteListScreen
@@ -40,6 +42,7 @@ import com.autoever.clazzi.viewmodel.VoteListViewModelFactory
 import com.autoever.clazzi.viewmodel.VoteViewModel
 import com.autoever.clazzi.viewmodel.VoteViewModelFactory
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +60,16 @@ class MainActivity : ComponentActivity() {
                 val voteListViewModel: VoteListViewModel = viewModel(
                     factory = VoteListViewModelFactory(repo)
                 )
+                val auth = FirebaseAuth.getInstance()
+
+                LaunchedEffect(auth.currentUser) {
+                    auth.currentUser?.let { user ->
+                        val nickname = user.uid.take(4)
+                        FirebaseFirestore.getInstance().collection("users")
+                            .document(user.uid)
+                            .set(mapOf("nickname" to nickname))
+                    }
+                }
 
                 NavHost(
                     navController = navController,
@@ -84,21 +97,28 @@ class MainActivity : ComponentActivity() {
                             voteViewModel = voteViewModel,
                             voteListViewModel = voteListViewModel
                         )
-                        /*if (vote != null) {
-                            VoteScreen(
-                                vote = vote,
-                                navController = navController,
-                                voteListViewModel = voteListViewModel
-                            )
-                        } else {
-                            val context = LocalContext.current
-                            Toast.makeText(context, "해당 투표가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
-                        }*/
                     }
                     composable("createVote") {
                         CreateVoteScreen(
                             navController = navController,
                             viewModel = voteListViewModel
+                        )
+                    }
+
+                    composable("myPage") {
+                        MyPageScreen(
+                            navController = navController
+                        )
+                    }
+
+                    composable("chatRoom/{chatRoomId}/{otherUserId}/{otherNickname}") { backStackEntry ->
+                        val chatRoomId = backStackEntry.arguments?.getString("chatRoomId") ?: ""
+                        val otherUserId = backStackEntry.arguments?.getString("otherUserId") ?: ""
+                        val otherNickname = backStackEntry.arguments?.getString("otherNickname") ?: ""
+                        ChatRoomScreen(
+                            chatRoomId = chatRoomId,
+                            otherUserId = otherUserId,
+                            otherNickname = otherNickname
                         )
                     }
                 }
@@ -109,13 +129,14 @@ class MainActivity : ComponentActivity() {
 
 sealed class BottomNavItem(val route: String, val icon: ImageVector, val label: String) {
     object VoteList: BottomNavItem("voteList", Icons.AutoMirrored.Filled.List, "투표")
-    object Chat: BottomNavItem("chat", Icons.AutoMirrored.Filled.List, "채팅")
-    object MyPage: BottomNavItem("myPage", Icons.AutoMirrored.Filled.List, "마이페이지")
+    object Chat: BottomNavItem("chat", Icons.Filled.ChatBubble, "채팅")
+    object MyPage: BottomNavItem("myPage", Icons.Default.Person, "마이페이지")
 }
 
 @Composable
 fun MainScreen(
-    voteListViewModel: VoteListViewModel, rootNavController: NavController
+    voteListViewModel: VoteListViewModel,
+    parentNavController: NavController
 ) {
     val navController = rememberNavController()
 
@@ -132,18 +153,19 @@ fun MainScreen(
             composable(BottomNavItem.VoteList.route) {
                 VoteListScreen(
                     navController = navController,
+                    parentNavController = parentNavController,
                     viewModel = voteListViewModel,
                     onVoteClicked = { voteId ->
-                        navController.navigate("vote/$voteId")
-                    }
+                        parentNavController.navigate("vote/$voteId")
+                    },
                 )
             }
             composable(BottomNavItem.Chat.route){
-                ChatScreen()
+                ChatScreen(parentNavController)
             }
 
             composable(BottomNavItem.MyPage.route) {
-                MyPageScreen(navController = navController)
+                MyPageScreen(navController = parentNavController)
             }
         }
     }

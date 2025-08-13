@@ -3,6 +3,7 @@ package com.autoever.clazzi.ui.screens
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -48,7 +49,8 @@ import com.google.firebase.auth.FirebaseAuth
 fun VoteListScreen(
     navController: NavController,
     viewModel: VoteListViewModel,
-    onVoteClicked: (String) -> Unit
+    onVoteClicked: (String) -> Unit,
+    parentNavController: NavController
 ) {
     val voteList by viewModel.voteList.collectAsState()
 
@@ -58,7 +60,7 @@ fun VoteListScreen(
                 title = { Text(stringResource(R.string.vote_list_title)) },
                 actions = {
                     IconButton(
-                        onClick = {navController.navigate("myPage")}
+                        onClick = {parentNavController.navigate("myPage")}
                     ) {
                         Icon(
                             imageVector = Icons.Default.Person,
@@ -71,7 +73,7 @@ fun VoteListScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    navController.navigate("createVote")
+                    parentNavController.navigate("createVote")
                 }
             ) {
                 Icon(Icons.Default.Add, contentDescription = "투표 만들기")
@@ -80,9 +82,10 @@ fun VoteListScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
-                .padding(innerPadding)
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(innerPadding),
+//                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(16.dp)
         ) {
             items(voteList) { vote ->
                 VoteItem(vote) {
@@ -142,17 +145,5 @@ fun VoteItem(
             // 투표 여부
             Text(if (hasVoted) "투표 완료" else "투표 미완료")
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun VoteListScreenPreview() {
-    ClazziTheme {
-        VoteListScreen(
-            navController = NavController(LocalContext.current),
-            viewModel = viewModel(),
-            onVoteClicked = {},
-        )
     }
 }
