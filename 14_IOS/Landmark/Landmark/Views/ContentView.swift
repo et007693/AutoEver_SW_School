@@ -8,36 +8,31 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var selection: Tab = .featured
+    
+    enum Tab {
+        case featured
+        case list
+    }
+    
     var body: some View {
-        VStack {
-            MapView()
-                .frame(height: 300)
-            CircleImage()
-                .offset(y: -130)
-                .padding(.bottom, -130)
-            VStack(alignment: .leading) {
-                Text("N서울타워")
-                    .font(.title)
-                HStack {
-                    Text("남산공원")
-                        .font(.subheadline)
-                    Spacer()
-                    Text("서울시")
-                        .font(.subheadline)
+        TabView(selection: $selection) {
+            CategoryHome()
+                .tabItem {
+                    Label("Featured", systemImage: "star")
                 }
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                Divider()
-                Text("about N서울타워")
-                    .font(.title2)
-                Text("서울의 중심부에 위치한 N서울타워는 서울을 한 눈에 조망할 수 있는 전망 명소로, 야경과 사랑의 자물쇠로 유명한 관광지입니다.")
-            }
-            .padding()
-            Spacer()
+                .tag(Tab.featured)
+            
+            LandmarkList()
+                .tabItem {
+                    Label("List", systemImage: "list.bullet")
+                }
+                .tag(Tab.list)
         }
     }
 }
 
 #Preview {
     ContentView()
+        .environment(ModelData())
 }

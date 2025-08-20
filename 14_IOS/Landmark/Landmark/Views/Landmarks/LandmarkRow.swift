@@ -18,21 +18,18 @@ struct LandmarkRow: View {
             Text(landmark.name)
             Spacer()
                 
+            if landmark.isFavorite {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+            }
         }
     }
 }
 
 #Preview("그룹") {
-    Group {
+    let landmarks = ModelData().landmarks
+    List {
         LandmarkRow(landmark: landmarks[0])
         LandmarkRow(landmark: landmarks[1])
     }
-}
-
-#Preview("N서울타워") {
-    LandmarkRow(landmark: landmarks[0])
-}
-
-#Preview("경복궁") {
-    LandmarkRow(landmark: landmarks[1])
 }

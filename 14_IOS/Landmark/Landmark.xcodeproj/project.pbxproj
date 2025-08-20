@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		846AE4FF2E53095D0094AFFC /* Landmark */ = {
+		846371A12E54053B00A32107 /* Landmark */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Landmark;
 			sourceTree = "<group>";
@@ -32,8 +32,8 @@
 		846AE4F42E53095D0094AFFC = {
 			isa = PBXGroup;
 			children = (
-				846AE4FF2E53095D0094AFFC /* Landmark */,
 				846AE4FE2E53095D0094AFFC /* Products */,
+				846371A12E54053B00A32107 /* Landmark */,
 			);
 			sourceTree = "<group>";
 		};
@@ -61,7 +61,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				846AE4FF2E53095D0094AFFC /* Landmark */,
+				846371A12E54053B00A32107 /* Landmark */,
 			);
 			name = Landmark;
 			packageProductDependencies = (
