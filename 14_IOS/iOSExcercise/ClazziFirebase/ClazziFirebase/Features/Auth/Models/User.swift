@@ -1,8 +1,8 @@
 //
 //  User.swift
-//  Clazzi
+//  ClazziFirebase
 //
-//  Created by Admin on 8/28/25.
+//  Created by Admin on 9/1/25.
 //
 
 import Foundation

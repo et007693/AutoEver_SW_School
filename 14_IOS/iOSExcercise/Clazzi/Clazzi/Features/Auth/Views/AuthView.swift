@@ -11,16 +11,15 @@ import SwiftData
 struct AuthView: View {
     @Environment(\.modelContext) private var modelContext
     
-//    @Binding var isLoggedIn: Bool
     @Binding var currentUserID: UUID?
     
     @Query private var users: [User]
-
+    
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var isPrivacyAgreed: Bool = false
-    @State private var isLogin: Bool = false // 처음에 회원가입 폼
-    @State private var isPasswordSecure: Bool = true
+    @State private var isLogin: Bool = false    // 처음에 회원가입 폼
+    @State private var isPasswordSecured: Bool = true
     
     var body: some View {
         NavigationStack {
@@ -28,9 +27,9 @@ struct AuthView: View {
                 Form {
                     TextField("이메일", text: $email)
                         .keyboardType(.emailAddress)
-                        .autocapitalization(.none)   // 자동 대문자 방지
-                        .textInputAutocapitalization(.never) // 자동 대문자 방지: iOS 15 이상
-                        .disableAutocorrection(true) // 자동 수정 방지
+                        .autocapitalization(.none)  // 자동 대문자 방지
+                        .textInputAutocapitalization(.never)    // 자동 대문자 방지 : iOS 15 이상
+                        .disableAutocorrection(true)    // 자동 수정 방지
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 8)
@@ -39,11 +38,11 @@ struct AuthView: View {
                         .padding(.bottom, 6)
                     
                     ZStack {
-                        if isPasswordSecure {
+                        if isPasswordSecured {
                             SecureField("비밀번호", text: $password)
-                                .autocapitalization(.none)   // 자동 대문자 방지
-                                .textInputAutocapitalization(.never) // 자동 대문자 방지: iOS 15 이상
-                                .disableAutocorrection(true) // 자동 수정 방지
+                                .autocapitalization(.none)  // 자동 대문자 방지
+                                .textInputAutocapitalization(.never)    // 자동 대문자 방지 : iOS 15 이상
+                                .disableAutocorrection(true)    // 자동 수정 방지
                                 .padding()
                                 .padding(.trailing, 50)
                                 .background(
@@ -52,9 +51,9 @@ struct AuthView: View {
                                 )
                         } else {
                             TextField("비밀번호", text: $password)
-                                .autocapitalization(.none) // 자동 대문자 방지
-                                .textInputAutocapitalization(.never) // 자동 대문자 방지: 15 이상
-                                .disableAutocorrection(true) // 자동 수정 방지
+                                .autocapitalization(.none)  // 자동 대문자 방지
+                                .textInputAutocapitalization(.never)    // 자동 대문자 방지 : iOS 15 이상
+                                .disableAutocorrection(true)    // 자동 수정 방지
                                 .padding()
                                 .padding(.trailing, 50)
                                 .background(
@@ -65,11 +64,14 @@ struct AuthView: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                isPasswordSecure.toggle()
+                                isPasswordSecured.toggle()
                             }) {
-                                Image(systemName: isPasswordSecure ? "eye.slash" : "eye")
+                                Image(systemName: isPasswordSecured ? "eye.slash" : "eye")
+                                    .foregroundStyle(.black)
+                                    .padding(.trailing)
                             }
                         }
+                        
                     }
                 }
                 .formStyle(.columns)
@@ -81,7 +83,7 @@ struct AuthView: View {
                     }) {
                         HStack {
                             Image(systemName: isPrivacyAgreed ? "checkmark.square.fill" : "square")
-                                .foregroundStyle(isPrivacyAgreed ? .blue : .gray)
+                                .foregroundColor(isPrivacyAgreed ? .blue : .gray)
                                 .font(.title2)
                             NavigationLink(destination: PrivacyView()) {
                                 Text("개인정보")
@@ -100,27 +102,39 @@ struct AuthView: View {
                 
                 Button(action: {
                     if isLogin {
-                        // 인덱스 가져오기
-//                        if users.firstIndex(where: { $0.email == email && $0.password == password }) != nil {
+                        // 인덱스 꺼내오기
+//                        if let currentUserIndex = users.firstIndex(where: { $0.email == email && $0.password == password }) {
 //                            print("로그인 성공")
 //                            isLoggedIn = true
+//                        } else {
+//                            print("로그인 실패")
+//                        }
+                        
                         // 아이템 꺼내오기
                         if let currentUser = users.first(where: { $0.email == email && $0.password == password }) {
                             print("로그인 성공")
                             currentUserID = currentUser.id
-                            UserDefaults.standard.set(currentUserID, forKey: "currentUserID")
+                            UserDefaults.standard.set(currentUser.id.uuidString, forKey: "currentUserID")
                         } else {
                             print("로그인 실패")
                         }
-
+                        
+                        // nil인지만 판단해도 된다.
+//                        if users.first(where: { $0.email == email && $0.password == password }) != nil {
+//                            print("로그인 성공")
+//                            isLoggedIn = true
+//                            UserDefaults.standard.set(true, forKey: "isLoggedIn")
+//                        } else {
+//                            print("로그인 실패")
+//                        }
                     } else {
                         let newUser = User(email: email, password: password)
                         modelContext.insert(newUser)
                         do {
                             try modelContext.save()
-                            print("회원가입 성공)")
+                            print("회원가입 성공")
                             currentUserID = newUser.id
-                            UserDefaults.standard.set(currentUserID, forKey: "currentUserID")
+                            UserDefaults.standard.set(newUser.id.uuidString, forKey: "currentUserID")
                         } catch {
                             print("회원가입 실패: \(error)")
                         }
@@ -134,6 +148,7 @@ struct AuthView: View {
                         .cornerRadius(8)
                 }
                 .padding(.bottom)
+                .disabled(email.isEmpty || password.isEmpty || !(isPrivacyAgreed || isLogin))
                 
                 Button(isLogin ? "회원가입 화면으로" : "로그인 화면으로") {
                     isLogin.toggle()

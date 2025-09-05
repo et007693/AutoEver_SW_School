@@ -1,14 +1,15 @@
 //
-//  CreateVoteView.swift
-//  Clazzi
+//  VoteEditorView.swift
+//  ClazziFirebase
 //
-//  Created by Kihwan Jo on 8/26/25.
+//  Created by Admin on 9/1/25.
 //
 
 import SwiftUI
+import SwiftData
 
 struct VoteEditorView: View {
-    // 뒤로 가기(모달(바텀시트) 닫기)
+    // 뒤로 가기 (모달(바텀 시트) 닫기)
     @Environment(\.dismiss) private var dismiss
     
     @State private var title: String = ""
@@ -17,23 +18,15 @@ struct VoteEditorView: View {
     // 투표 목록 화면에서 전달해줄 콜백 메서드
     var onSave: (Vote) -> Void
     
-    private var existingVote: Vote? = nil
+    private var vote: Vote?
     
     init(vote: Vote? = nil, onSave: @escaping (Vote) -> Void) {
-        self.existingVote = vote
+        self.vote = vote
         self.onSave = onSave
         // 수정일 경우 초기값 설정
-        if let vote = vote {
-            _title = State(initialValue: vote.title)
-            _options = State(initialValue: vote.options.map { $0.name })
-        }
+        self.title = vote?.title ?? ""
+        self.options = vote?.options.map { $0.name } ?? ["", ""]
     }
-//    init(vote: Vote? = nil, onSave: @escaping (Vote) -> Void) {
-//        self.existingVote = vote
-//        _title = State(initialValue: vote?.title ?? "")
-//        _options = State(initialValue: vote?.options ?? ["", ""])
-//        self.onSave = onSave
-//    }
     
     var body: some View {
         NavigationStack {
@@ -65,44 +58,50 @@ struct VoteEditorView: View {
                         .buttonStyle(.bordered)
                         .frame(maxWidth: .infinity, alignment: .trailing)
                         Spacer()
+                        
                     }
-                    .padding()
-                    
                 }
-//                .navigationTitle(Text(existingVote == nil ? "투표 생성 화면" : "투표 수정 화면"))
-                .navigationTitle(Text("투표 \(existingVote == nil ? "생성" : "수정") 화면"))
+                .navigationTitle(Text(vote == nil ? "투표 생성 화면" : "투표 수정 화면"))
+//                .navigationTitle(Text("투표 \(existingVote == nil ? "생성" : "수정") 화면"))
                 
                 // 생성, 수정하기 버튼
                 Button(action: {
-                    if let vote = existingVote {
+                    if let vote = vote {
                         // 기존 객체를 직접 수정
                         vote.title = title
                         
                         // 기존 옵션 삭제 후 새로 생성
                         vote.options = options.map { VoteOption(name: $0) }
-                        
                         onSave(vote)
                     } else {
-                        // 새 객체 생성
                         let newVote = Vote(title: title, options: options.map { VoteOption(name: $0) })
                         onSave(newVote)
                     }
-                    
                     dismiss()
                 }) {
-                    Text(existingVote == nil ? "생성하기" : "수정하기")
+                    Text(vote == nil ? "생성하기" : "수정하기")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
-                .padding()
             }
+            .padding()
         }
     }
 }
-
-#Preview {
+#Preview("투표 생성") {
     VoteEditorView() { _ in }
+}
+
+#Preview("투표 수정") {
+    // 샘플 투표 생성
+    let sampleVote = Vote(title: "샘플 투표", options: [
+        VoteOption(name: "옵션 1"),
+        VoteOption(name: "옵션 2")
+    ])
+    
+    // 뷰에 샘플 투표 전달
+    VoteEditorView(vote: sampleVote) { _ in }
 }
